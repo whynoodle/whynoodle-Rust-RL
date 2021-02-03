@@ -20,4 +20,17 @@ default = []
 download = ["datasets/download"]
 
 [dependencies.datasets]
-git = "https://github.com/ZuseZ4/
+git = "https://github.com/ZuseZ4/Datasets"
+branch = "master"
+default-features = false
+
+[dependencies.ndarray]
+version = "0.14"
+features = ["rayon"]
+
+[dev-dependencies]
+criterion = "0.3"
+
+[[bench]]
+name = "my_benchmark"
+harness = false
