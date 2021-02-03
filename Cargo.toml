@@ -1,1 +1,10 @@
-[lib
+[lib]
+[package]
+name = "rust-rl"
+version = "0.1.0"
+authors = ["zuse"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[profile.re
