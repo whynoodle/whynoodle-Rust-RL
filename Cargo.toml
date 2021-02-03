@@ -7,4 +7,17 @@ edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[profile.re
+[profile.release]
+debug = true
+
+[dependencies]
+rand = "0.8"
+ndarray-rand = "0.13"
+ndarray-stats = "0.4"
+
+[features]
+default = []
+download = ["datasets/download"]
+
+[dependencies.datasets]
+git = "https://github.com/ZuseZ4/
