@@ -67,3 +67,10 @@ fn get_agents(agent_nums: Vec<usize>) -> Result<Vec<Box<dyn Agent>>, String> {
             ))),
             2 => Ok(Box::new(QLAgent::new(1., 0.1, 6 * 6))),
             3 => Ok(Box::new(RandomAgent::new())),
+            4 => Ok(Box::new(HumanPlayer::new())),
+            _ => Err("Only implemented agents 1-4!".to_string()),
+        };
+        res.push(new_agent?);
+    }
+    Ok(res)
+}
