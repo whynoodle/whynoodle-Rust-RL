@@ -26,4 +26,12 @@ fn train(nn: &mut NeuralNetwork, num: usize, input: &Array4<f32>, fb: &Array2<f3
         let pos = rand::thread_rng().gen_range(0..input.shape()[0]) as usize;
         let current_input = input.index_axis(Axis(0), pos).into_owned();
         let current_fb = fb.index_axis(Axis(0), pos).into_owned();
-   
+        nn.train3d(current_input, current_fb);
+    }
+}
+
+pub fn main() {
+    let (train_size, test_size, rows, cols) = (60_000, 10_000, 28, 28);
+
+    #[cfg(feature = "download")]
+    mnist::download_and_extract();
