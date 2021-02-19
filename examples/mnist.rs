@@ -17,4 +17,10 @@ fn new() -> NeuralNetwork {
     nn
 }
 
-fn test(nn: &mut NeuralNetwork, input: &Array4<f32>, feedback: 
+fn test(nn: &mut NeuralNetwork, input: &Array4<f32>, feedback: &Array2<f32>) {
+    nn.test(input.clone().into_dyn(), feedback.clone());
+}
+
+fn train(nn: &mut NeuralNetwork, num: usize, input: &Array4<f32>, fb: &Array2<f32>) {
+    for _ in 0..num {
+        let pos = rand:
