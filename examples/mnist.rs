@@ -35,3 +35,11 @@ pub fn main() {
 
     #[cfg(feature = "download")]
     mnist::download_and_extract();
+    let mnist::Data {
+        trn_img,
+        trn_lbl,
+        tst_img,
+        tst_lbl,
+        ..
+    } = mnist::new_normalized();
+    let trn_img = trn_img.into_shape((train_size, 1
