@@ -42,4 +42,8 @@ pub fn main() {
         tst_lbl,
         ..
     } = mnist::new_normalized();
-    let trn_img = trn_img.into_shape((train_size, 1
+    let trn_img = trn_img.into_shape((train_size, 1, rows, cols)).unwrap();
+    let tst_img = tst_img.into_shape((test_size, 1, rows, cols)).unwrap();
+
+    assert_eq!(trn_img.shape(), &[train_size, 1, rows, cols]);
+    assert_eq!(tst_img.shape(), &[test_
