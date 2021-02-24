@@ -46,4 +46,10 @@ pub fn main() {
     let tst_img = tst_img.into_shape((test_size, 1, rows, cols)).unwrap();
 
     assert_eq!(trn_img.shape(), &[train_size, 1, rows, cols]);
-    assert_eq!(tst_img.shape(), &[test_
+    assert_eq!(tst_img.shape(), &[test_size, 1, rows, cols]);
+
+    // Get the image of the first digit.
+    let first_image = trn_img.index_axis(Axis(0), 0);
+    assert_eq!(first_image.shape(), &[1, 28, 28]);
+
+    let mut nn 
