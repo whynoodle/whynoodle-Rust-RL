@@ -52,4 +52,10 @@ pub fn main() {
     let first_image = trn_img.index_axis(Axis(0), 0);
     assert_eq!(first_image.shape(), &[1, 28, 28]);
 
-    let mut nn 
+    let mut nn = new();
+    nn.print_setup();
+    train(&mut nn, 60_000, &trn_img, &trn_lbl); //60_000
+    let start = Instant::now();
+    for i in 0..20 {
+        print!("{}: ", i + 1);
+        test(&mut nn, &tst_img, &tst_lbl);
