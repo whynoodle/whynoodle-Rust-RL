@@ -59,3 +59,12 @@ pub fn main() {
     for i in 0..20 {
         print!("{}: ", i + 1);
         test(&mut nn, &tst_img, &tst_lbl);
+    }
+    let stop = Instant::now();
+    let duration = stop.duration_since(start);
+    println!(
+        "Trained for {},{} seconds.",
+        duration.as_secs(),
+        duration.subsec_millis()
+    );
+}
