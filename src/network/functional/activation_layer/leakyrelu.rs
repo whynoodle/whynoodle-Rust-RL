@@ -9,4 +9,15 @@ pub struct LeakyReLuLayer {}
 impl LeakyReLuLayer {
     /// No parameters are possible.
     pub fn new() -> Self {
-        Le
+        LeakyReLuLayer {}
+    }
+}
+
+impl Functional for LeakyReLuLayer {}
+
+impl Layer for LeakyReLuLayer {
+    fn get_type(&self) -> String {
+        "LeakyReLu Layer".to_string()
+    }
+
+    fn get_output_shape(&self, input_dim: 
