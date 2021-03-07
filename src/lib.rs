@@ -10,4 +10,6 @@ pub mod network;
 /// A submodule including everything to run reinforcement learning tasks.
 ///
 /// This submodule includes two interfaces for environments and agents.
-/// One environment and multiple 
+/// One environment and multiple agents are provided as example.
+/// A training submodule is available for convenience.
+pub mod rl;
