@@ -20,4 +20,13 @@ impl Layer for LeakyReLuLayer {
         "LeakyReLu Layer".to_string()
     }
 
-    fn get_output_shape(&self, input_dim: 
+    fn get_output_shape(&self, input_dim: Vec<usize>) -> Vec<usize> {
+        input_dim
+    }
+
+    fn get_num_parameter(&self) -> usize {
+        0
+    }
+
+    fn predict(&self, x: ArrayD<f32>) -> ArrayD<f32> {
+        x.mapv(|x| if x > 0. { x } else { 0.01
