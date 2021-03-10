@@ -29,4 +29,12 @@ impl Layer for LeakyReLuLayer {
     }
 
     fn predict(&self, x: ArrayD<f32>) -> ArrayD<f32> {
-        x.mapv(|x| if x > 0. { x } else { 0.01
+        x.mapv(|x| if x > 0. { x } else { 0.01 * x })
+    }
+
+    fn forward(&mut self, x: ArrayD<f32>) -> ArrayD<f32> {
+        self.predict(x)
+    }
+
+    fn backward(&mut self, feedback: ArrayD<f32>) -> ArrayD<f32> {
+        feedback.mapv(|x| if x >
