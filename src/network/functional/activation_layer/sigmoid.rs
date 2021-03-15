@@ -9,4 +9,14 @@ pub struct SigmoidLayer {
 }
 
 impl SigmoidLayer {
-    ///
+    /// No parameters are possible.
+    pub fn new() -> Self {
+        SigmoidLayer {
+            output: Array1::zeros(0).into_dyn(),
+        }
+    }
+}
+
+impl Functional for SigmoidLayer {}
+
+impl Layer for SigmoidLaye
