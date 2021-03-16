@@ -28,4 +28,12 @@ impl Layer for SigmoidLayer {
         input_dim
     }
 
-    fn get_num_parameter(&self) -
+    fn get_num_parameter(&self) -> usize {
+        0
+    }
+
+    fn predict(&self, x: ArrayD<f32>) -> ArrayD<f32> {
+        x.mapv(|x| 1.0 / (1.0 + (-x).exp()))
+    }
+
+    fn forward(&mut self, x: ArrayD<f32>) -> ArrayD<f32> {
