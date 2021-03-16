@@ -19,4 +19,13 @@ impl SigmoidLayer {
 
 impl Functional for SigmoidLayer {}
 
-impl Layer for SigmoidLaye
+impl Layer for SigmoidLayer {
+    fn get_type(&self) -> String {
+        "Sigmoid Layer".to_string()
+    }
+
+    fn get_output_shape(&self, input_dim: Vec<usize>) -> Vec<usize> {
+        input_dim
+    }
+
+    fn get_num_parameter(&self) -
