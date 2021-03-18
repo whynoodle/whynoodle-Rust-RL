@@ -43,4 +43,9 @@ impl Layer for SigmoidLayer {
 
     fn backward(&mut self, feedback: ArrayD<f32>) -> ArrayD<f32> {
         self.output.mapv(|x| x * (1.0 - x)) * feedback
-    
+    }
+
+    fn clone_box(&self) -> Box<dyn Layer> {
+        Box::new(SigmoidLayer::new())
+    }
+}
