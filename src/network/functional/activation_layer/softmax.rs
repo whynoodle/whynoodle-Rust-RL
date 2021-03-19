@@ -11,4 +11,13 @@ pub struct SoftmaxLayer {
 
 impl SoftmaxLayer {
     /// No parameters are possible.
- 
+    pub fn new() -> Self {
+        SoftmaxLayer {
+            output: Array::zeros(0).into_dyn(), //will be overwritten
+        }
+    }
+}
+
+impl Functional for SoftmaxLayer {}
+
+impl Layer for SoftmaxLay
