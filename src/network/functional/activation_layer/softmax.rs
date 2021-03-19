@@ -20,4 +20,13 @@ impl SoftmaxLayer {
 
 impl Functional for SoftmaxLayer {}
 
-impl Layer for SoftmaxLay
+impl Layer for SoftmaxLayer {
+    fn get_type(&self) -> String {
+        "Softmax Layer".to_string()
+    }
+
+    fn get_output_shape(&self, input_dim: Vec<usize>) -> Vec<usize> {
+        input_dim
+    }
+
+    fn get_num_
