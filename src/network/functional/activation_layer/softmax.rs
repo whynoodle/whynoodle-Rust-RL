@@ -52,4 +52,13 @@ impl Layer for SoftmaxLayer {
 
     fn backward(&mut self, feedback: ArrayD<f32>) -> ArrayD<f32> {
         &self.output - &feedback
- 
+    }
+
+    fn clone_box(&self) -> Box<dyn Layer> {
+        Box::new(SoftmaxLayer::new())
+    }
+}
+
+fn predict_single(single_x: &mut ArrayD<f32>) {
+    let max: f32 = *single_x.max_skipnan();
+    single_x.mapv_inplace(|x
