@@ -45,4 +45,11 @@ impl Layer for SoftmaxLayer {
         x
     }
 
-    fn forward(&mut self, x: ArrayD<f
+    fn forward(&mut self, x: ArrayD<f32>) -> ArrayD<f32> {
+        self.output = self.predict(x);
+        self.output.clone()
+    }
+
+    fn backward(&mut self, feedback: ArrayD<f32>) -> ArrayD<f32> {
+        &self.output - &feedback
+ 
