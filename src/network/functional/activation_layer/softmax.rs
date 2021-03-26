@@ -61,4 +61,7 @@ impl Layer for SoftmaxLayer {
 
 fn predict_single(single_x: &mut ArrayD<f32>) {
     let max: f32 = *single_x.max_skipnan();
-    single_x.mapv_inplace(|x
+    single_x.mapv_inplace(|x| (x - max).exp());
+    let sum: f32 = single_x.iter().filter(|x| !x.is_nan()).sum::<f32>();
+    single_x.mapv_inplace(|x| x / sum)
+}
