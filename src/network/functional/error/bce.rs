@@ -66,3 +66,9 @@ impl Error for BinaryCrossEntropyError {
         Box::new(BinaryCrossEntropyError::new())
     }
 }
+
+//https://gombru.github.io/2018/05/23/cross_entropy_loss/
+//https://towardsdatascience.com/implementing-the-xor-gate-using-backpropagation-in-neural-networks-c1f255b4f20d
+
+//numeric stable version from here (as in keras/tf):
+//https://towardsdatascience.com/nothing-but-numpy-understanding-creating-binary-classification-neural-networks-with-e746423c8d5c
