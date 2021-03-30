@@ -7,4 +7,10 @@ use ndarray_stats::QuantileExt;
 #[derive(Clone, Default)]
 pub struct CategoricalCrossEntropyError {}
 
-impl
+impl CategoricalCrossEntropyError {
+    /// No parameters required.
+    pub fn new() -> Self {
+        CategoricalCrossEntropyError {}
+    }
+
+    fn clip_values(&self, m
