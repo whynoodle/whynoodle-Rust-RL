@@ -13,4 +13,10 @@ impl CategoricalCrossEntropyError {
         CategoricalCrossEntropyError {}
     }
 
-    fn clip_values(&self, m
+    fn clip_values(&self, mut arr: ArrayD<f32>) -> ArrayD<f32> {
+        arr.mapv_inplace(|x| if x > 0.9999 { 0.9999 } else { x });
+        arr.mapv(|x| if x < 1e-8 { 1e-8 } else { x })
+    }
+}
+
+impl Error for CategoricalCrossEntr
