@@ -30,4 +30,9 @@ impl Error for CategoricalCrossEntropyError {
         Array::from_elem(1, loss).into_dyn()
     }
 
-    fn backward(&self, outpu
+    fn backward(&self, output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
+        -(target / self.clip_values(output))
+    }
+
+    fn deriv_from_logits(&self, mut output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
+        let
