@@ -19,4 +19,10 @@ impl CategoricalCrossEntropyError {
     }
 }
 
-impl Error for CategoricalCrossEntr
+impl Error for CategoricalCrossEntropyError {
+    fn get_type(&self) -> String {
+        format!("Categorical Crossentropy")
+    }
+
+    fn forward(&self, mut output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
+        output = s
