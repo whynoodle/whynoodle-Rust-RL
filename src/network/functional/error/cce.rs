@@ -35,4 +35,7 @@ impl Error for CategoricalCrossEntropyError {
     }
 
     fn deriv_from_logits(&self, mut output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
-        let
+        let max: f32 = *output.clone().max_skipnan();
+        output.mapv_inplace(|x| (x - max).exp());
+        let sum: f32 = output.iter().filter(|x| !x.is_nan()).sum::<f32>();
+        output.mapv_inplace(|x| x
