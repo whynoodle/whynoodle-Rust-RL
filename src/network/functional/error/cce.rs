@@ -25,4 +25,9 @@ impl Error for CategoricalCrossEntropyError {
     }
 
     fn forward(&self, mut output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
-        output = s
+        output = self.clip_values(output);
+        let loss = -(target * output.mapv(f32::ln)).sum();
+        Array::from_elem(1, loss).into_dyn()
+    }
+
+    fn backward(&self, outpu
