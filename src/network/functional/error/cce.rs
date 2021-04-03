@@ -38,4 +38,10 @@ impl Error for CategoricalCrossEntropyError {
         let max: f32 = *output.clone().max_skipnan();
         output.mapv_inplace(|x| (x - max).exp());
         let sum: f32 = output.iter().filter(|x| !x.is_nan()).sum::<f32>();
-        output.mapv_inplace(|x| x
+        output.mapv_inplace(|x| x / sum);
+        output - target
+    }
+
+    fn loss_from_logits(&self, mut output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
+        // ignore nans on sum and max
+        let ma
