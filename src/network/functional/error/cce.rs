@@ -53,4 +53,9 @@ impl Error for CategoricalCrossEntropyError {
     }
 
     fn clone_box(&self) -> Box<dyn Error> {
-        Box::new(self
+        Box::new(self.clone())
+    }
+}
+
+//https://gombru.github.io/2018/05/23/cross_entropy_loss/
+//https://towardsdatascience.com/implementing-the-xor-gate-using-backpropagation-in-neural-networks-c1
