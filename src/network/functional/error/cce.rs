@@ -47,4 +47,10 @@ impl Error for CategoricalCrossEntropyError {
         let max: f32 = *output.max_skipnan();
         output.mapv_inplace(|x| (x - max).exp());
         let sum: f32 = output.iter().filter(|x| !x.is_nan()).sum::<f32>();
-        output.mapv_inplace(|x| x
+        output.mapv_inplace(|x| x / sum);
+        let loss = -(target * output).iter().sum::<f32>();
+        Array::from_elem(1, loss).into_dyn()
+    }
+
+    fn clone_box(&self) -> Box<dyn Error> {
+        Box::new(self
