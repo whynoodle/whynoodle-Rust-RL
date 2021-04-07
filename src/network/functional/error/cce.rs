@@ -58,4 +58,6 @@ impl Error for CategoricalCrossEntropyError {
 }
 
 //https://gombru.github.io/2018/05/23/cross_entropy_loss/
-//https://towardsdatascience.com/implementing-the-xor-gate-using-backpropagation-in-neural-networks-c1
+//https://towardsdatascience.com/implementing-the-xor-gate-using-backpropagation-in-neural-networks-c1f255b4f20d
+
+//https://stats.stackexchange.com/questions/235528/backpropagation-with-softmax-cross-entropy
