@@ -17,4 +17,4 @@ pub use mse::MeanSquareError;
 pub use noop::NoopError;
 
 //probably not correct impl
-//pub use rms
+//pub use rmse::RootMeanSquareError;
