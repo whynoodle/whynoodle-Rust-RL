@@ -24,4 +24,9 @@ impl Error for MeanSquareError {
         let err = output
             .iter()
             .zip(target.iter())
-            .
+            .fold(0., |err, val| err + f32::powf(val.0 - val.1, 2.))
+            / n;
+        Array1::<f32>::from_elem(1, 0.5 * err).into_dyn()
+    }
+
+    fn backward(&self, output: ArrayD<f32>, target: Array
