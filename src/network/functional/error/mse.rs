@@ -13,4 +13,10 @@ impl MeanSquareError {
 }
 
 impl Error for MeanSquareError {
-    fn get_
+    fn get_type(&self) -> String {
+        format!("Mean Square")
+    }
+
+    fn forward(&self, output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
+        let output = output.into_dimensionality::<Ix1>().unwrap();
+    
