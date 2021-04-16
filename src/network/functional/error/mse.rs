@@ -19,4 +19,9 @@ impl Error for MeanSquareError {
 
     fn forward(&self, output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
         let output = output.into_dimensionality::<Ix1>().unwrap();
-    
+        let target = target.into_dimensionality::<Ix1>().unwrap();
+        let n = output.len() as f32;
+        let err = output
+            .iter()
+            .zip(target.iter())
+            .
