@@ -29,4 +29,10 @@ impl Error for MeanSquareError {
         Array1::<f32>::from_elem(1, 0.5 * err).into_dyn()
     }
 
-    fn backward(&self, output: ArrayD<f32>, target: Array
+    fn backward(&self, output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
+        let n = target.len() as f32;
+        (output - target) / n
+    }
+
+    fn loss_from_logits(&self, output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
+        self.forw
