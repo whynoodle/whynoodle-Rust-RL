@@ -42,4 +42,7 @@ impl Error for MeanSquareError {
         self.backward(output, target)
     }
 
-    fn clone_box(&
+    fn clone_box(&self) -> Box<dyn Error> {
+        Box::new(self.clone())
+    }
+}
