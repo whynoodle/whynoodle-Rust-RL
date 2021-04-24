@@ -35,4 +35,11 @@ impl Error for MeanSquareError {
     }
 
     fn loss_from_logits(&self, output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
-        self.forw
+        self.forward(output, target)
+    }
+
+    fn deriv_from_logits(&self, output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
+        self.backward(output, target)
+    }
+
+    fn clone_box(&
