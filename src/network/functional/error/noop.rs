@@ -10,4 +10,14 @@ pub struct NoopError {}
 impl NoopError {
     /// No parameters required.
     pub fn new() -> Self {
-   
+        NoopError {}
+    }
+}
+
+impl Error for NoopError {
+    fn get_type(&self) -> String {
+        "Noop Error function".to_string()
+    }
+
+    //printing 42 as obviously useless
+    fn forward(&self, _input: ArrayD<f32>, _targ
