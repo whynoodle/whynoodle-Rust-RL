@@ -20,4 +20,12 @@ impl Error for NoopError {
     }
 
     //printing 42 as obviously useless
-    fn forward(&self, _input: ArrayD<f32>, _targ
+    fn forward(&self, _input: ArrayD<f32>, _target: ArrayD<f32>) -> ArrayD<f32> {
+        Array1::from_elem(1, 42.).into_dyn()
+    }
+
+    fn backward(&self, _input: ArrayD<f32>, feedback: ArrayD<f32>) -> ArrayD<f32> {
+        feedback
+    }
+
+    //printi
