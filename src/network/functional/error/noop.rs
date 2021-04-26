@@ -28,4 +28,9 @@ impl Error for NoopError {
         feedback
     }
 
-    //printi
+    //printing 42 as obviously useless
+    fn loss_from_logits(&self, _input: ArrayD<f32>, _feedback: ArrayD<f32>) -> ArrayD<f32> {
+        Array1::from_elem(1, 42.).into_dyn()
+    }
+
+    fn deriv_from_logits(&se
