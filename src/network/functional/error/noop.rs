@@ -33,4 +33,11 @@ impl Error for NoopError {
         Array1::from_elem(1, 42.).into_dyn()
     }
 
-    fn deriv_from_logits(&se
+    fn deriv_from_logits(&self, _input: ArrayD<f32>, feedback: ArrayD<f32>) -> ArrayD<f32> {
+        feedback
+    }
+
+    fn clone_box(&self) -> Box<dyn Error> {
+        Box::new(self.clone())
+    }
+}
