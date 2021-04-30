@@ -16,4 +16,9 @@ impl RootMeanSquareError {
 
 impl Error for RootMeanSquareError {
     fn get_type(&self) -> String {
-   
+        format!("Root Mean Square")
+    }
+
+    fn forward(&self, output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
+        let output = output.into_dimensionality::<Ix1>().unwrap();
+        
