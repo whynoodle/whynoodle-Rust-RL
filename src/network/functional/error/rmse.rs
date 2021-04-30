@@ -7,4 +7,13 @@ pub struct RootMeanSquareError {
     err: f32,
 }
 
-impl RootMeanSquareE
+impl RootMeanSquareError {
+    /// No parameters required.
+    pub fn new() -> Self {
+        RootMeanSquareError { err: 0. }
+    }
+}
+
+impl Error for RootMeanSquareError {
+    fn get_type(&self) -> String {
+   
