@@ -26,4 +26,10 @@ impl Error for RootMeanSquareError {
         let err = output
             .iter()
             .zip(target.iter())
-            .fold(0., 
+            .fold(0., |err, val| err + f32::powf(val.0 - val.1, 2.))
+            / (2. * n);
+        self.err = f32::sqrt(err);
+        Array1::<f32>::from_elem(1, self.err).into_dyn()
+    }
+
+    fn backward(&mut self, output: ArrayD
