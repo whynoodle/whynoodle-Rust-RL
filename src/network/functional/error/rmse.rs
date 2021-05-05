@@ -37,4 +37,9 @@ impl Error for RootMeanSquareError {
         (output - target) / div
     }
 
-    fn loss_from_logits(&mut self, output: ArrayD<f32>,
+    fn loss_from_logits(&mut self, output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
+        self.forward(output, target)
+    }
+
+    fn deriv_from_logits(&mut self, output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
+       
