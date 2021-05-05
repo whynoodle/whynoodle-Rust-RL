@@ -32,4 +32,9 @@ impl Error for RootMeanSquareError {
         Array1::<f32>::from_elem(1, self.err).into_dyn()
     }
 
-    fn backward(&mut self, output: ArrayD
+    fn backward(&mut self, output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
+        let div = 2. * target.len() as f32 * self.err;
+        (output - target) / div
+    }
+
+    fn loss_from_logits(&mut self, output: ArrayD<f32>,
