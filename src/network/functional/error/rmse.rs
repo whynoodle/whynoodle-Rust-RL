@@ -42,4 +42,10 @@ impl Error for RootMeanSquareError {
     }
 
     fn deriv_from_logits(&mut self, output: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
-       
+        self.backward(output, target)
+    }
+    
+    fn clone_box(&self) -> Box<dyn Error> {
+      Box::new(self.clone())
+    }
+}
