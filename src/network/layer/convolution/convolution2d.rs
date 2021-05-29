@@ -119,3 +119,192 @@ impl ConvolutionLayer2D {
         );
         assert!(filter_shape.0 >= 1, "filter_shape has to be one or greater");
         assert!(
+            in_channels >= 1,
+            "filter depth has to be at least one (and equal to img_channels)"
+        );
+        let elements_per_kernel = filter_shape.0 * filter_shape.1 * in_channels;
+        let kernels: Array2<f32> = Array::random(
+            (out_channels, elements_per_kernel),
+            Normal::new(0.0, 1.0 as f32).unwrap(),
+        );
+        assert_eq!(kernels.nrows(), out_channels, "filter implementation wrong");
+        let bias = Array::zeros(out_channels); //http://cs231n.github.io/neural-networks-2/
+        let mut weight_optimizer = optimizer.clone_box();
+        let mut bias_optimizer = optimizer;
+        weight_optimizer.set_input_shape(vec![out_channels, elements_per_kernel]);
+        bias_optimizer.set_input_shape(vec![out_channels]);
+        new_from_kernels(
+            kernels,
+            bias,
+            weight_optimizer,
+            bias_optimizer,
+            filter_shape,
+            in_channels,
+            out_channels,
+            padding,
+            batch_size,
+            learning_rate,
+        )
+    }
+}
+
+impl Layer for ConvolutionLayer2D {
+    fn get_type(&self) -> String {
+        format!("Conv")
+    }
+
+    fn get_num_parameter(&self) -> usize {
+        self.kernels.nrows() * self.kernels.ncols() + self.kernels.nrows() // num_kernels * size_kernels + bias
+    }
+
+    fn clone_box(&self) -> Box<dyn Layer> {
+        let out_channels = self.kernels.nrows();
+        let new_layer = new_from_kernels(
+            self.kernels.clone(),
+            self.bias.clone(),
+            self.weight_optimizer.clone_box(),
+            self.bias_optimizer.clone_box(),
+            self.filter_shape,
+            self.in_channels,
+            out_channels,
+            self.padding,
+            self.batch_size,
+            self.learning_rate,
+        );
+        Box::new(new_layer)
+    }
+
+    // returns the output shape despite of a (maybe) existing batchsize.
+    // So those values are for a single input.
+    fn get_output_shape(&self, input_shape: Vec<usize>) -> Vec<usize> {
+        get_single_output_shape(
+            input_shape,
+            self.kernels.nrows(),
+            self.filter_shape,
+            self.padding,
+        )
+    }
+
+    fn predict(&self, input: ArrayD<f32>) -> ArrayD<f32> {
+        if input.ndim() == 3 {
+            let single_input = input.into_dimensionality::<Ix3>().unwrap();
+            return predict_single(
+                single_input,
+                &self.kernels,
+                &self.bias,
+                self.in_channels,
+                self.filter_shape,
+                self.padding,
+            )
+            .into_dyn();
+        }
+        assert_eq!(input.ndim(), 4);
+        let batch_input = input.into_dimensionality::<Ix4>().unwrap();
+        let single_input_shape = batch_input.index_axis(Axis(0), 0).shape().to_vec();
+        let tmp_dims = self.get_output_shape(single_input_shape);
+        let dims = vec![
+            batch_input.shape()[0],
+            tmp_dims[0],
+            tmp_dims[1],
+            tmp_dims[2],
+        ];
+        let mut res = Array::zeros(dims);
+        for (i, single_input) in batch_input.outer_iter().enumerate() {
+            let single_res = predict_single(
+                single_input.into_owned(),
+                &self.kernels,
+                &self.bias,
+                self.in_channels,
+                self.filter_shape,
+                self.padding,
+            );
+            res.index_axis_mut(Axis(0), i).assign(&single_res);
+        }
+        res.into_dyn()
+    }
+
+    fn forward(&mut self, input: ArrayD<f32>) -> ArrayD<f32> {
+        self.last_input = conv_utils::add_padding(self.padding, input.clone());
+        self.predict(input)
+    }
+
+    fn backward(&mut self, feedback: ArrayD<f32>) -> ArrayD<f32> {
+        if feedback.ndim() == 3 {
+            let single_feedback = feedback.into_dimensionality::<Ix3>().unwrap();
+            calc_single_weight_update(
+                single_feedback,
+                self.last_input.clone(),
+                &mut self.kernel_updates,
+                &mut self.bias_updates,
+                &mut self.num_in_batch,
+                self.in_channels,
+            );
+        } else {
+            assert_eq!(feedback.ndim(), 4);
+            let batch_feedback = feedback.into_dimensionality::<Ix4>().unwrap();
+            for (single_feedback, single_input) in batch_feedback
+                .outer_iter()
+                .zip(self.last_input.outer_iter())
+            {
+                calc_single_weight_update(
+                    single_feedback.into_owned(),
+                    single_input.into_owned(),
+                    &mut self.kernel_updates,
+                    &mut self.bias_updates,
+                    &mut self.num_in_batch,
+                    self.in_channels,
+                );
+            }
+        }
+
+        // After the final update we finally apply the updates.
+        if self.num_in_batch == self.batch_size {
+            self.num_in_batch = 0;
+            let weight_delta = 1. / (self.batch_size as f32) * self.kernel_updates.clone();
+            let bias_delta = 1. / (self.batch_size as f32) * self.bias_updates.clone();
+            self.kernels -= &(self.weight_optimizer.optimize2d(weight_delta) * self.learning_rate);
+            self.bias -= &(self.bias_optimizer.optimize1d(bias_delta) * self.learning_rate);
+        }
+
+        // calc feedback for the previous layer:
+        // use fliped kernel vectors here
+        // https://medium.com/@pavisj/convolutions-and-backpropagations-46026a8f5d2c
+        // return that
+
+        Array::zeros(self.last_input.shape()).into_dyn()
+    }
+}
+
+fn calc_single_weight_update(
+    feedback: Array3<f32>,
+    input: ArrayD<f32>,
+    kernel_updates: &mut Array2<f32>,
+    bias_updates: &mut Array1<f32>,
+    num_in_batch: &mut usize,
+    in_channels: usize,
+) {
+    // precalculate the weight updates for this batch_element
+
+    // prepare feedback matrix
+    // we always return a 3d output in our forward/predict function, so we will always receive a 3d feedback:
+    let x: Array3<f32> = feedback.into_dimensionality::<Ix3>().unwrap();
+    let feedback_as_kernel = conv_utils::shape_into_kernel(x.clone());
+
+    //prepare feedback
+    let k: usize = (feedback_as_kernel.shape()[1] as f64).sqrt() as usize;
+    let input_unfolded = unfold_3d_matrix(in_channels, input, k, false);
+
+    //calculate kernel updates
+    let prod = input_unfolded.dot(&feedback_as_kernel.t()).t().into_owned();
+    let sum: Array1<f32> = x.sum_axis(Axis(1)).sum_axis(Axis(1)); // 3d feedback, but only 1d bias (1 single f32 bias value per kernel)
+
+    // When having a batch size of 32, we are setting the weight updates once and update them 31 times.
+    if *num_in_batch == 0 {
+        *kernel_updates = prod;
+        *bias_updates = sum;
+    } else {
+        *kernel_updates = kernel_updates.clone() + prod;
+        *bias_updates = bias_updates.clone() + sum;
+    }
+    *num_in_batch += 1;
+}
