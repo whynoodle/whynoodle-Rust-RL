@@ -11,4 +11,5 @@ pub mod activation_layer;
 /// Beside of the normal forward() and backward() functions some Error functions implement both functions in a *_from_logits() variant.  
 /// They merge their own implementation with the previous activation function in a numerically more stable way.  
 /// Better known examples are Softmax+CategoricalCrossEntropy or Sigmoid+BinaryCrossEntropy.  
-/// When used as part
+/// When used as part of nn, the appropriate functions are automatically picked.  
+pub mod error;
