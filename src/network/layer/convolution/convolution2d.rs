@@ -308,3 +308,49 @@ fn calc_single_weight_update(
     }
     *num_in_batch += 1;
 }
+
+fn get_single_output_shape(
+    input_shape: Vec<usize>,
+    out_channels: usize,
+    filter_shape: (usize, usize),
+    padding: usize,
+) -> Vec<usize> {
+    let num_dim = input_shape.len();
+    assert!(
+        num_dim == 3,
+        "expected input dim 3: (in_channels, x, y), was: {}",
+        num_dim
+    );
+    let mut res = vec![out_channels, 0, 0];
+    res[1] = input_shape[num_dim - 2] - filter_shape.0 + 1 + 2 * padding;
+    res[2] = input_shape[num_dim - 1] - filter_shape.1 + 1 + 2 * padding;
+    res
+}
+
+fn predict_single(
+    input: Array3<f32>,
+    kernels: &Array2<f32>,
+    bias: &Array1<f32>,
+    in_channels: usize,
+    filter_shape: (usize, usize),
+    padding: usize,
+) -> Array3<f32> {
+    let tmp = get_single_output_shape(
+        input.shape().to_vec(),
+        kernels.nrows(),
+        filter_shape,
+        padding,
+    );
+    let (output_shape_x, output_shape_y) = (tmp[1], tmp[2]);
+    let input = conv_utils::add_padding(padding, input.into_dyn());
+
+    // prepare input matrix
+    let x_unfolded = unfold_3d_matrix(in_channels, input, filter_shape.0, true);
+
+    // calculate convolution (=output for next layer)
+    let prod = x_unfolded.dot(&kernels.t()) + bias;
+
+    // reshape product for next layer: (num_kernels, new_x, new_y)
+    let res = fold_output(prod, (kernels.nrows(), output_shape_x, output_shape_y));
+    res
+}
