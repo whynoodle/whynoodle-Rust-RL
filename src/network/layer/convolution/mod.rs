@@ -4,4 +4,8 @@ mod convolution2d;
 mod conv_utils;
 
 //// This layer implements a classical convolution layer.
-//pub use con
+//pub use convolution1d::ConvolutionLayer1D;
+/// This layer implements a classical 2d convolution layer.
+pub use convolution2d::ConvolutionLayer2D;
+//// This layer implements a classical convolution layer.
+//pub use convolu
