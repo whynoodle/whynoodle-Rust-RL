@@ -23,4 +23,7 @@ pub struct DenseLayer {
 impl DenseLayer {
     /// A common constructor for a dense layer.
     ///
-    /// The learning_rate is expected to be in the range [0,
+    /// The learning_rate is expected to be in the range [0,1].
+    /// A batch_size of 1 basically means that no batch processing happens.
+    /// A batch_size of 0, a learning_rate outside of [0,1], or an input or output dimension of 0 will result in an error.
+    /// T
