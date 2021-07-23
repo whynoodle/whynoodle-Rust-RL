@@ -16,4 +16,11 @@ pub struct DenseLayer {
     batch_size: usize,
     forward_passes: usize,
     backward_passes: usize,
-    wei
+    weight_optimizer: Box<dyn Optimizer>,
+    bias_optimizer: Box<dyn Optimizer>,
+}
+
+impl DenseLayer {
+    /// A common constructor for a dense layer.
+    ///
+    /// The learning_rate is expected to be in the range [0,
