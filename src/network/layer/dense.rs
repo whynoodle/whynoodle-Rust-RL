@@ -26,4 +26,11 @@ impl DenseLayer {
     /// The learning_rate is expected to be in the range [0,1].
     /// A batch_size of 1 basically means that no batch processing happens.
     /// A batch_size of 0, a learning_rate outside of [0,1], or an input or output dimension of 0 will result in an error.
-    /// T
+    /// TODO: return Result<Self, Error> instead of Self
+    pub fn new(
+        input_dim: usize,
+        output_dim: usize,
+        batch_size: usize,
+        learning_rate: f32,
+        optimizer: Box<dyn Optimizer>,
+   
