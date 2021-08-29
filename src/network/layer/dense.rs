@@ -37,4 +37,7 @@ impl DenseLayer {
         //xavier init
         let weights: Array2<f32> = Array::random(
             (output_dim, input_dim),
-            Normal::new(0.0, 2.0 / ((output_dim + input_dim
+            Normal::new(0.0, 2.0 / ((output_dim + input_dim) as f32).sqrt()).unwrap(),
+        );
+        let bias: Array1<f32> = Array::zeros(output_dim); //https://cs231n.github.io/neural-networks-2/#init
+        let mut weight_optimizer 
