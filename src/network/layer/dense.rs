@@ -33,4 +33,8 @@ impl DenseLayer {
         batch_size: usize,
         learning_rate: f32,
         optimizer: Box<dyn Optimizer>,
-   
+    ) -> Self {
+        //xavier init
+        let weights: Array2<f32> = Array::random(
+            (output_dim, input_dim),
+            Normal::new(0.0, 2.0 / ((output_dim + input_dim
