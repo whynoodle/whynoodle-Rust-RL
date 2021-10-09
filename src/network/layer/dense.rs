@@ -40,4 +40,8 @@ impl DenseLayer {
             Normal::new(0.0, 2.0 / ((output_dim + input_dim) as f32).sqrt()).unwrap(),
         );
         let bias: Array1<f32> = Array::zeros(output_dim); //https://cs231n.github.io/neural-networks-2/#init
-        let mut weight_optimizer 
+        let mut weight_optimizer = optimizer.clone_box();
+        let mut bias_optimizer = optimizer;
+        weight_optimizer.set_input_shape(vec![output_dim, input_dim]);
+        bias_optimizer.set_input_shape(vec![output_dim]);
+        new_from_matrices
