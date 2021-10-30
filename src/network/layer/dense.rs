@@ -44,4 +44,13 @@ impl DenseLayer {
         let mut bias_optimizer = optimizer;
         weight_optimizer.set_input_shape(vec![output_dim, input_dim]);
         bias_optimizer.set_input_shape(vec![output_dim]);
-        new_from_matrices
+        new_from_matrices(
+            weights,
+            bias,
+            input_dim,
+            output_dim,
+            batch_size,
+            learning_rate,
+            weight_optimizer,
+            bias_optimizer,
+        
