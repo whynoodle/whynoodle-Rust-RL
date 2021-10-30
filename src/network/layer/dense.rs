@@ -53,4 +53,9 @@ impl DenseLayer {
             learning_rate,
             weight_optimizer,
             bias_optimizer,
-        
+        )
+    }
+
+    fn update_weights(&mut self) {
+        let d_w: Array2<f32> = &self.feedback.dot(&self.net.t()) / (self.batch_size as f32);
+        let d_b: Array1<f32> = &self.feedback.sum_axis(Axis(1)) / 
