@@ -63,4 +63,12 @@ impl DenseLayer {
         assert_eq!(d_w.shape(), self.weights.shape());
         assert_eq!(d_b.shape(), self.bias.shape());
 
-        self.weights -= &(self.weight_optimizer.optimize2d(d_w) * self.learning_r
+        self.weights -= &(self.weight_optimizer.optimize2d(d_w) * self.learning_rate);
+        self.bias -= &(self.bias_optimizer.optimize1d(d_b) * self.learning_rate);
+    }
+}
+
+fn new_from_matrices(
+    weights: Array2<f32>,
+    bias: Array1<f32>,
+    input_
