@@ -71,4 +71,12 @@ impl DenseLayer {
 fn new_from_matrices(
     weights: Array2<f32>,
     bias: Array1<f32>,
-    input_
+    input_dim: usize,
+    output_dim: usize,
+    batch_size: usize,
+    learning_rate: f32,
+    weight_optimizer: Box<dyn Optimizer>,
+    bias_optimizer: Box<dyn Optimizer>,
+) -> DenseLayer {
+    DenseLayer {
+   
