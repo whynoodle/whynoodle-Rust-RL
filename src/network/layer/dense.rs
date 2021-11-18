@@ -79,4 +79,10 @@ fn new_from_matrices(
     bias_optimizer: Box<dyn Optimizer>,
 ) -> DenseLayer {
     DenseLayer {
-   
+        input_dim,
+        output_dim,
+        learning_rate,
+        weights,
+        bias,
+        net: Array::zeros((input_dim, batch_size)),
+        feedback: Array::zeros((output_dim, ba
