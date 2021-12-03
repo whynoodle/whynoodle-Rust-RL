@@ -95,4 +95,12 @@ fn new_from_matrices(
 }
 
 impl Layer for DenseLayer {
-    fn get_type(&se
+    fn get_type(&self) -> String {
+        format!("Dense")
+    }
+
+    fn get_num_parameter(&self) -> usize {
+        self.input_dim * self.output_dim + self.output_dim // weights + bias
+    }
+
+    fn get_o
