@@ -85,4 +85,14 @@ fn new_from_matrices(
         weights,
         bias,
         net: Array::zeros((input_dim, batch_size)),
-        feedback: Array::zeros((output_dim, ba
+        feedback: Array::zeros((output_dim, batch_size)),
+        batch_size,
+        forward_passes: 0,
+        backward_passes: 0,
+        weight_optimizer,
+        bias_optimizer,
+    }
+}
+
+impl Layer for DenseLayer {
+    fn get_type(&se
