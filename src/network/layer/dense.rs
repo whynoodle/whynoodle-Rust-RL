@@ -109,4 +109,10 @@ impl Layer for DenseLayer {
 
     fn clone_box(&self) -> Box<dyn Layer> {
         let new_layer = new_from_matrices(
-            se
+            self.weights.clone(),
+            self.bias.clone(),
+            self.input_dim,
+            self.output_dim,
+            self.batch_size,
+            self.learning_rate,
+            self.weight_o
