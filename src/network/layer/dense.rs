@@ -103,4 +103,10 @@ impl Layer for DenseLayer {
         self.input_dim * self.output_dim + self.output_dim // weights + bias
     }
 
-    fn get_o
+    fn get_output_shape(&self, _input_dim: Vec<usize>) -> Vec<usize> {
+        vec![self.output_dim]
+    }
+
+    fn clone_box(&self) -> Box<dyn Layer> {
+        let new_layer = new_from_matrices(
+            se
