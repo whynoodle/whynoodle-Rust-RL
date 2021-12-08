@@ -115,4 +115,11 @@ impl Layer for DenseLayer {
             self.output_dim,
             self.batch_size,
             self.learning_rate,
-            self.weight_o
+            self.weight_optimizer.clone_box(),
+            self.bias_optimizer.clone_box(),
+        );
+        Box::new(new_layer)
+    }
+
+    fn predict(&self, x: ArrayD<f32>) -> ArrayD<f32> {
+        // Handle 
