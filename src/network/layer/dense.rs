@@ -125,4 +125,10 @@ impl Layer for DenseLayer {
         // Handle 1D input
         if x.ndim() == 1 {
             let single_input: Array1<f32> = x.into_dimensionality::<Ix1>().unwrap();
-            let res: Array1<f32> = self.weights.dot(&single_input
+            let res: Array1<f32> = self.weights.dot(&single_input) + &self.bias;
+            return res.into_dyn();
+        }
+
+        // Handle 2D input (input-batch)
+        assert_eq!(x.ndim(), 2, "expected a 1d or 2d input!");
+        let batch_input: Array2<f32> = x.into_dimensionality::<Ix2>().
