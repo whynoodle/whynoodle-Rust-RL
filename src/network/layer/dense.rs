@@ -122,4 +122,7 @@ impl Layer for DenseLayer {
     }
 
     fn predict(&self, x: ArrayD<f32>) -> ArrayD<f32> {
-        // Handle 
+        // Handle 1D input
+        if x.ndim() == 1 {
+            let single_input: Array1<f32> = x.into_dimensionality::<Ix1>().unwrap();
+            let res: Array1<f32> = self.weights.dot(&single_input
