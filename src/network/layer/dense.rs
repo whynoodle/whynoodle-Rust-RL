@@ -131,4 +131,8 @@ impl Layer for DenseLayer {
 
         // Handle 2D input (input-batch)
         assert_eq!(x.ndim(), 2, "expected a 1d or 2d input!");
-        let batch_input: Array2<f32> = x.into_dimensionality::<Ix2>().
+        let batch_input: Array2<f32> = x.into_dimensionality::<Ix2>().unwrap();
+        let batch_size = batch_input.nrows();
+        let mut res = Array2::zeros((batch_size, self.output_dim));
+        assert_eq!(res.nrows(), batch_size);
+        for (i, single_input) in batch_input.outer_iter().enu
