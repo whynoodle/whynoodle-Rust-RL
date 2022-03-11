@@ -135,4 +135,11 @@ impl Layer for DenseLayer {
         let batch_size = batch_input.nrows();
         let mut res = Array2::zeros((batch_size, self.output_dim));
         assert_eq!(res.nrows(), batch_size);
-        for (i, single_input) in batch_input.outer_iter().enu
+        for (i, single_input) in batch_input.outer_iter().enumerate() {
+            let single_res = &self.weights.dot(&single_input) + &self.bias;
+            res.row_mut(i).assign(&single_res);
+        }
+        res.into_dyn()
+    }
+
+    fn forward(&mut se
