@@ -156,4 +156,10 @@ impl Layer for DenseLayer {
         // store feedback gradients for batch-weightupdates
         store_input(
             feedback.clone(),
-            &mut 
+            &mut self.feedback,
+            self.batch_size,
+            &mut self.backward_passes,
+        );
+
+        //calc derivate to backprop through layers
+        // TODO assure w
