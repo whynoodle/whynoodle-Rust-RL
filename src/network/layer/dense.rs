@@ -149,4 +149,11 @@ impl Layer for DenseLayer {
             self.batch_size,
             &mut self.forward_passes,
         );
-        self.predict
+        self.predict(x)
+    }
+
+    fn backward(&mut self, feedback: ArrayD<f32>) -> ArrayD<f32> {
+        // store feedback gradients for batch-weightupdates
+        store_input(
+            feedback.clone(),
+            &mut 
