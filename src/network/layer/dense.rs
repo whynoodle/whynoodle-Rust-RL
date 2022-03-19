@@ -142,4 +142,11 @@ impl Layer for DenseLayer {
         res.into_dyn()
     }
 
-    fn forward(&mut se
+    fn forward(&mut self, x: ArrayD<f32>) -> ArrayD<f32> {
+        store_input(
+            x.clone(),
+            &mut self.net,
+            self.batch_size,
+            &mut self.forward_passes,
+        );
+        self.predict
