@@ -162,4 +162,7 @@ impl Layer for DenseLayer {
         );
 
         //calc derivate to backprop through layers
-        // TODO assure w
+        // TODO assure which way the a.dot(b) should be calculated!
+        let output: ArrayD<f32>;
+        if feedback.ndim() == 1 {
+            let single_feedback: Array1<f32> = feedback.into_dimensionality::<Ix1>().unwrap()
