@@ -165,4 +165,7 @@ impl Layer for DenseLayer {
         // TODO assure which way the a.dot(b) should be calculated!
         let output: ArrayD<f32>;
         if feedback.ndim() == 1 {
-            let single_feedback: Array1<f32> = feedback.into_dimensionality::<Ix1>().unwrap()
+            let single_feedback: Array1<f32> = feedback.into_dimensionality::<Ix1>().unwrap();
+            output = single_feedback.dot(&self.weights).into_owned().into_dyn();
+            assert_eq!(output.shape()[0], self.input_dim);
+        //output = self.weights.t().dot(&single_feedback).into_
