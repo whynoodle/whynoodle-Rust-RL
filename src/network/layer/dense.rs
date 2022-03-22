@@ -168,4 +168,8 @@ impl Layer for DenseLayer {
             let single_feedback: Array1<f32> = feedback.into_dimensionality::<Ix1>().unwrap();
             output = single_feedback.dot(&self.weights).into_owned().into_dyn();
             assert_eq!(output.shape()[0], self.input_dim);
-        //output = self.weights.t().dot(&single_feedback).into_
+        //output = self.weights.t().dot(&single_feedback).into_dyn();
+        } else {
+            assert_eq!(feedback.ndim(), 2);
+            let batch_feedback: Array2<f32> = feedback.into_dimensionality::<Ix2>().unwrap();
+            let batch_size = batch_feedback.nrows()
