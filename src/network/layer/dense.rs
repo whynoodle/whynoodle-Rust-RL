@@ -172,4 +172,7 @@ impl Layer for DenseLayer {
         } else {
             assert_eq!(feedback.ndim(), 2);
             let batch_feedback: Array2<f32> = feedback.into_dimensionality::<Ix2>().unwrap();
-            let batch_size = batch_feedback.nrows()
+            let batch_size = batch_feedback.nrows();
+            let mut tmp_res = Array2::zeros((batch_size, self.input_dim));
+            for (i, single_feedback) in batch_feedback.outer_iter().enumerate() {
+                //let single_grad = single_feedback.dot(&self.wei
