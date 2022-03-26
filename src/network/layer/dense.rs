@@ -175,4 +175,11 @@ impl Layer for DenseLayer {
             let batch_size = batch_feedback.nrows();
             let mut tmp_res = Array2::zeros((batch_size, self.input_dim));
             for (i, single_feedback) in batch_feedback.outer_iter().enumerate() {
-                //let single_grad = single_feedback.dot(&self.wei
+                //let single_grad = single_feedback.dot(&self.weights.t());
+                let single_grad = &self.weights.t().dot(&single_feedback);
+                tmp_res.row_mut(i).assign(single_grad);
+            }
+            output = tmp_res.into_dyn();
+        }
+
+        //
