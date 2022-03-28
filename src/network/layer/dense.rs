@@ -182,4 +182,15 @@ impl Layer for DenseLayer {
             output = tmp_res.into_dyn();
         }
 
-        //
+        //update weights
+        if self.backward_passes % self.batch_size == 0 {
+            self.update_weights();
+        }
+
+        output
+    }
+}
+
+fn store_input(
+    input: ArrayD<f32>,
+    buffer: &mut Arr
