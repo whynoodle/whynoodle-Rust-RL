@@ -193,4 +193,11 @@ impl Layer for DenseLayer {
 
 fn store_input(
     input: ArrayD<f32>,
-    buffer: &mut Arr
+    buffer: &mut Array2<f32>,
+    batch_size: usize,
+    start_pos: &mut usize,
+) {
+    // 1D case
+    if input.ndim() == 1 {
+        let single_input = input.into_dimensionality::<Ix1>().unwrap();
+        buffer.column
