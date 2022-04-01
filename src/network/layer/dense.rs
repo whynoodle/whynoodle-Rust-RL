@@ -215,4 +215,7 @@ fn store_input(
             batch_size
         )
     ); // otherwise buffer overrun
-    let batch_input = input.
+    let batch_input = input.into_dimensionality::<Ix2>().unwrap();
+    let mut pos_in_buffer = *start_pos % batch_size;
+    for single_input in batch_input.outer_iter() {
+        buffer.column_mut(pos_in_buffer).assign(&single_i
