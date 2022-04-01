@@ -208,4 +208,11 @@ fn store_input(
     // 2D case
     assert_eq!(input.ndim(), 2);
     assert!(
-        input.shape()[0] <= batc
+        input.shape()[0] <= batch_size,
+        format!(
+            "error, failed assertion {} <= {}",
+            input.shape()[0],
+            batch_size
+        )
+    ); // otherwise buffer overrun
+    let batch_input = input.
