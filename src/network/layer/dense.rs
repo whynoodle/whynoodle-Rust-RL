@@ -200,4 +200,12 @@ fn store_input(
     // 1D case
     if input.ndim() == 1 {
         let single_input = input.into_dimensionality::<Ix1>().unwrap();
-        buffer.column
+        buffer.column_mut(*start_pos).assign(&single_input);
+        *start_pos = (*start_pos + 1) % batch_size;
+        return;
+    }
+
+    // 2D case
+    assert_eq!(input.ndim(), 2);
+    assert!(
+        input.shape()[0] <= batc
