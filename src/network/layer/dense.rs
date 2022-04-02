@@ -218,4 +218,8 @@ fn store_input(
     let batch_input = input.into_dimensionality::<Ix2>().unwrap();
     let mut pos_in_buffer = *start_pos % batch_size;
     for single_input in batch_input.outer_iter() {
-        buffer.column_mut(pos_in_buffer).assign(&single_i
+        buffer.column_mut(pos_in_buffer).assign(&single_input);
+        pos_in_buffer = (pos_in_buffer + 1) % batch_size;
+    }
+    *start_pos = (*start_pos + batch_input.shape()[0]) % batch_size;
+}
