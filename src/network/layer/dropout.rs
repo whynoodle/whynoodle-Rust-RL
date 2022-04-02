@@ -44,3 +44,20 @@ impl Layer for DropoutLayer {
 
     fn predict(&self, x: ArrayD<f32>) -> ArrayD<f32> {
         x
+    }
+
+    fn forward(&mut self, x: ArrayD<f32>) -> ArrayD<f32> {
+        let weights = Array::random(
+            x.shape(),
+            Binomial::new(1, 1. - (self.drop_prob as f64)).unwrap(),
+        );
+        // Scale output during training to handle dropped values.
+        let weights = weights.mapv(|x| (x as f32) / (1. - self.drop_prob));
+        self.dropout_matrix = weights.into_dyn();
+        x * &self.dropout_matrix
+    }
+
+    fn backward(&mut self, feedback: ArrayD<f32>) -> ArrayD<f32> {
+        feedback * &self.dropout_matrix
+    }
+}
