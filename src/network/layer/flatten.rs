@@ -23,4 +23,16 @@ impl FlattenLayer {
             batch_input_shape,
             num_elements,
         }
-  
+    }
+}
+
+impl Layer for FlattenLayer {
+    fn get_type(&self) -> String {
+        "Flatten".to_string()
+    }
+
+    fn get_num_parameter(&self) -> usize {
+        0
+    }
+
+    fn get_output_shape(&self, input_dim: Vec<usiz
