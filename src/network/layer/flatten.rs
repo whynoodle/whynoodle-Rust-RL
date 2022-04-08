@@ -16,4 +16,11 @@ impl FlattenLayer {
     pub fn new(input_shape: Vec<usize>) -> Self {
         let num_elements = input_shape.clone().iter().product();
         let mut batch_input_shape = vec![0];
-        bat
+        batch_input_shape.extend_from_slice(&input_shape);
+        FlattenLayer {
+            input_ndim: input_shape.len(),
+            input_shape,
+            batch_input_shape,
+            num_elements,
+        }
+  
