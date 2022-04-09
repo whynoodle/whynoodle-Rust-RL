@@ -35,4 +35,12 @@ impl Layer for FlattenLayer {
         0
     }
 
-    fn get_output_shape(&self, input_dim: Vec<usiz
+    fn get_output_shape(&self, input_dim: Vec<usize>) -> Vec<usize> {
+        vec![input_dim.iter().product()]
+    }
+
+    fn clone_box(&self) -> Box<dyn Layer> {
+        Box::new(FlattenLayer::new(self.input_shape.clone()))
+    }
+
+    fn predict(&self, x: Array
