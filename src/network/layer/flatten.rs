@@ -43,4 +43,9 @@ impl Layer for FlattenLayer {
         Box::new(FlattenLayer::new(self.input_shape.clone()))
     }
 
-    fn predict(&self, x: Array
+    fn predict(&self, x: ArrayD<f32>) -> ArrayD<f32> {
+        if x.ndim() == self.input_ndim {
+            return x.into_shape(self.num_elements).unwrap().into_dyn();
+        }
+        let batch_size = x.shape()[0];
+        x.
