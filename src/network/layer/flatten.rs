@@ -48,4 +48,13 @@ impl Layer for FlattenLayer {
             return x.into_shape(self.num_elements).unwrap().into_dyn();
         }
         let batch_size = x.shape()[0];
-        x.
+        x.into_shape((batch_size, self.num_elements))
+            .unwrap()
+            .into_dyn()
+    }
+
+    fn forward(&mut self, x: ArrayD<f32>) -> ArrayD<f32> {
+        self.predict(x)
+    }
+
+    fn backwa
