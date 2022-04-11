@@ -66,4 +66,8 @@ impl Layer for FlattenLayer {
         }
         self.batch_input_shape[0] = feedback.shape()[0];
         feedback
-            .into_shape(self.batch_input_shape.clone()
+            .into_shape(self.batch_input_shape.clone())
+            .unwrap()
+            .into_dyn()
+    }
+}
