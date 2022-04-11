@@ -57,4 +57,8 @@ impl Layer for FlattenLayer {
         self.predict(x)
     }
 
-    fn backwa
+    fn backward(&mut self, feedback: ArrayD<f32>) -> ArrayD<f32> {
+        if feedback.ndim() == 1 {
+            return feedback
+                .into_shape(self.input_shape.clone())
+      
