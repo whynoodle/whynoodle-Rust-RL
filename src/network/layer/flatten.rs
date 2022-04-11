@@ -61,4 +61,9 @@ impl Layer for FlattenLayer {
         if feedback.ndim() == 1 {
             return feedback
                 .into_shape(self.input_shape.clone())
-      
+                .unwrap()
+                .into_dyn();
+        }
+        self.batch_input_shape[0] = feedback.shape()[0];
+        feedback
+            .into_shape(self.batch_input_shape.clone()
