@@ -13,4 +13,9 @@ pub trait Layer: Send + Sync {
     ///
     fn get_num_parameter(&self) -> usize;
 
-    /// Each layer is required to predict is output shape given the input
+    /// Each layer is required to predict is output shape given the input shape.
+    ///
+    fn get_output_shape(&self, input_dim: Vec<usize>) -> Vec<usize>;
+
+    /// This method is used for the inference part, when no training is required.  
+    /// It comes with a smaller memory footprint than
