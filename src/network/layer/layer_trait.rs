@@ -18,4 +18,6 @@ pub trait Layer: Send + Sync {
     fn get_output_shape(&self, input_dim: Vec<usize>) -> Vec<usize>;
 
     /// This method is used for the inference part, when no training is required.  
-    /// It comes with a smaller memory footprint than
+    /// It comes with a smaller memory footprint than the forward() method, which stores information for a following backward() call.
+    ///
+    fn predict(&self, input: ArrayD<f32>) -> ArrayD<f32>; // similar to forward(..), but no
