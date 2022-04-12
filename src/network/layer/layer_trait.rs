@@ -8,4 +8,9 @@ pub trait Layer: Send + Sync {
     ///
     fn get_type(&self) -> String;
 
-    /// The number of trainable parameters in th
+    /// The number of trainable parameters in this Layer.  
+    /// Might be zero for some layers like "Flatten".
+    ///
+    fn get_num_parameter(&self) -> usize;
+
+    /// Each layer is required to predict is output shape given the input
