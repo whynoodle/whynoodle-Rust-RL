@@ -27,4 +27,8 @@ pub trait Layer: Send + Sync {
     fn forward(&mut self, input: ArrayD<f32>) -> ArrayD<f32>;
 
     /// This method is used for the weight updates during the training run.  
-    /// It is expected to upda
+    /// It is expected to update the weights, if any, accordingly and return the error for the previous layer.
+    ///
+    fn backward(&mut self, feedback: ArrayD<f32>) -> ArrayD<f32>;
+
+    /// A function to create a boxed clone of t
