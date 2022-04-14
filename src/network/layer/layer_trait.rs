@@ -24,4 +24,7 @@ pub trait Layer: Send + Sync {
 
     /// This method is used for the forward pass during training time.
     ///
-    fn for
+    fn forward(&mut self, input: ArrayD<f32>) -> ArrayD<f32>;
+
+    /// This method is used for the weight updates during the training run.  
+    /// It is expected to upda
