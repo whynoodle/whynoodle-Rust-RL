@@ -31,4 +31,6 @@ pub trait Layer: Send + Sync {
     ///
     fn backward(&mut self, feedback: ArrayD<f32>) -> ArrayD<f32>;
 
-    /// A function to create a boxed clone of t
+    /// A function to create a boxed clone of the used Layer.
+    fn clone_box(&self) -> Box<dyn Layer>;
+}
