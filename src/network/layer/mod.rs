@@ -10,4 +10,8 @@ pub use layer_trait::Layer;
 
 /// This layer implements a classical convolution layer.
 pub use convolution::ConvolutionLayer2D;
-/// This lay
+/// This layer implements a classical dense layer.
+pub use dense::DenseLayer;
+/// This layer implements a classical dropout layer.
+pub use dropout::DropoutLayer;
+/// This layer implements a classical dropout layer.
