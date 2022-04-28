@@ -6,4 +6,15 @@ pub struct ReshapeLayer {
 }
 
 impl ReshapeLayer {
-  pub fn new(input_shape:
+  pub fn new(input_shape: [usize;3]) -> Self {
+    FlattenLayer{
+      input_shape,
+      num_elements: input_shape[0]*input_shape[1]*input_shape[2],
+    }
+  }
+}
+
+impl Layer for ReshapeLayer {
+
+  fn get_type(&self) -> String {
+    "Reshape".
