@@ -15,3 +15,4 @@ pub use dense::DenseLayer;
 /// This layer implements a classical dropout layer.
 pub use dropout::DropoutLayer;
 /// This layer implements a classical dropout layer.
+pub use flatten::FlattenLayer;
