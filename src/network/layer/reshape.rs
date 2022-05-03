@@ -17,4 +17,16 @@ impl ReshapeLayer {
 impl Layer for ReshapeLayer {
 
   fn get_type(&self) -> String {
-    "Reshape".
+    "Reshape".to_string()
+  }
+
+  fn get_num_parameter(&self) -> usize {
+    0
+  }
+
+  fn predict(&self, mut x: ArrayD<f32>) -> ArrayD<f32> {
+    self.forward(x)
+  }
+
+
+  fn forward(&self, mut x: ArrayD<f32>) -> Arr
