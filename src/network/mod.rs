@@ -11,4 +11,13 @@ pub mod layer;
 /// The input shape, error function and the optimizer are set during network creation.  
 /// If an individual error function or optimizer should be used, they can be set (overwriting the former one) by using set_error_function() or set_optimizer().  
 /// Default layers can be added using convenience functions like add_dense(..) or add_convolution(..) which allow setting the main parameters.  
-/// For a higher level of controll, or to add own layers, the store_layer(Box<dyn Layer>) function can be used to add a layer to the curr
+/// For a higher level of controll, or to add own layers, the store_layer(Box<dyn Layer>) function can be used to add a layer to the current network.  
+pub mod nn;
+
+/// This submodule offers 5 of the most common optimizers.
+///
+/// noop falls back to the default sgd.
+pub mod optimizer;
+
+/// This submodule offers stateless layers and functions.
+pub mo
