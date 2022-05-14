@@ -389,3 +389,132 @@ impl NeuralNetwork {
 
     /// This function handles the inference on 1d input.
     pub fn predict1d(&self, input: Array1<f32>) -> Array1<f32> {
+        self.predict(input.into_dyn())
+    }
+    /// This function handles the inference on 2d input.
+    pub fn predict2d(&self, input: Array2<f32>) -> Array1<f32> {
+        self.predict(input.into_dyn())
+    }
+    /// This function handles the inference on 3d input.
+    pub fn predict3d(&self, input: Array3<f32>) -> Array1<f32> {
+        self.predict(input.into_dyn())
+    }
+
+    /// This function handles the inference on dynamic-dimensional input.
+    pub fn predict(&self, mut input: ArrayD<f32>) -> Array1<f32> {
+        for i in 0..self.layers.len() {
+            input = self.layers[i].predict(input);
+        }
+        input.into_dimensionality::<Ix1>().unwrap() //output should be Array1 again
+    }
+
+    /// This function handles the inference on a batch of dynamic-dimensional input.
+    pub fn predict_batch(&self, mut input: ArrayD<f32>) -> Array2<f32> {
+        for i in 0..self.layers.len() {
+            input = self.layers[i].predict(input);
+        }
+        input.into_dimensionality::<Ix2>().unwrap()
+    }
+
+    /// This function calculates the inference accuracy on a testset with given labels.
+    pub fn test(&self, input: ArrayD<f32>, target: Array2<f32>) {
+        let n = target.len_of(Axis(0));
+        let mut loss: Array1<f32> = Array1::zeros(n);
+        let mut correct: Array1<f32> = Array1::ones(n);
+        par_azip!((index i, l in &mut loss, c in &mut correct) {
+            let current_input = input.index_axis(Axis(0), i);
+            let current_fb = target.index_axis(Axis(0), i);
+            let pred = self.predict(current_input.into_owned().into_dyn());
+            *l = self.loss_from_prediction(pred.clone(), current_fb.into_owned());
+
+            let best_guess: f32 = (pred.clone() * current_fb).sum();
+
+            let num: usize = pred.iter().filter(|&x| *x >= best_guess).count();
+            if num != 1 {
+                *c = 0.;
+            }
+        });
+        let avg_loss = loss.par_iter().sum::<f32>() / (n as f32);
+        let acc = correct.par_iter().sum::<f32>() / (n as f32);
+        println!("avg loss: {}, percentage correct: {}", avg_loss, acc);
+    }
+
+    /// This function calculates the loss based on the neural network inference and a target label.
+    pub fn loss_from_prediction(&self, prediction: Array1<f32>, target: Array1<f32>) -> f32 {
+        let y = prediction.into_dyn();
+        let t = target.into_dyn();
+        let loss = self.error_function.forward(y, t);
+        loss[0]
+    }
+
+    /// This function calculates the loss based on the original data and the target label.
+    pub fn loss_from_input(&self, mut input: ArrayD<f32>, target: Array1<f32>) -> f32 {
+        let n = self.layers.len();
+        for i in 0..(n - 1) {
+            input = self.layers[i].predict(input);
+        }
+
+        let loss;
+        if self.from_logits {
+            loss = self
+                .error_function
+                .loss_from_logits(input, target.into_dyn());
+        } else {
+            loss = self.error_function.forward(input, target.into_dyn());
+        };
+        loss[0]
+    }
+
+    /// This function handles training on a single 1d example.
+    pub fn train1d(&mut self, input: Array1<f32>, target: Array1<f32>) {
+        self.train(input.into_dyn(), target.into_dyn());
+    }
+    /// This function handles training on a single 2d example.
+    pub fn train2d(&mut self, input: Array2<f32>, target: Array1<f32>) {
+        self.train(input.into_dyn(), target.into_dyn());
+    }
+    /// This function handles training on a single 3d example.
+    pub fn train3d(&mut self, input: Array3<f32>, target: Array1<f32>) -> Array1<f32> {
+        self.train(input.into_dyn(), target.into_dyn())
+            .into_dimensionality::<Ix1>()
+            .unwrap()
+    }
+    /// This function handles training on a single dynamic-dimensional example.
+    pub fn train(&mut self, mut input: ArrayD<f32>, target: ArrayD<f32>) -> ArrayD<f32> {
+        //assert_eq!(input.len_of(Axis(0)), target.len()); //later when training on batches
+        //maybe return option(accuracy,None) and add a setter to return accuracy?
+        let n = self.layers.len();
+
+        // forward pass
+        // handle layers 1 till pre-last
+        for i in 0..(n - 1) {
+            input = self.layers[i].forward(input);
+        }
+        let res = input.clone();
+
+        let mut feedback;
+        // handle last layer and error function
+        if self.from_logits {
+            //merge last layer with error function
+            feedback = self
+                .error_function
+                .deriv_from_logits(input, target.into_dyn());
+        // to print error function loss here:
+        // println!("{}", self.error_function.loss_from_logits(input, target);
+        } else {
+            //evaluate last activation layer and error function seperately
+            input = self.layers[n - 1].forward(input);
+            // to print error function loss here:
+            // println!("{}", self.error_function.loss(input, target);
+            feedback = self.error_function.backward(input, target.into_dyn());
+            feedback = self.layers[n - 1].backward(feedback);
+        }
+
+        // backward pass
+        // handle pre-last till first layer
+        for i in (0..(n - 1)).rev() {
+            feedback = self.layers[i].backward(feedback);
+        }
+        res
+    }
+}
