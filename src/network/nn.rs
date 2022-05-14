@@ -186,3 +186,206 @@ impl NeuralNetwork {
     pub fn set_optimizer(&mut self, optimizer: Box<dyn Optimizer>) {
         self.optimizer_function = optimizer;
     }
+
+    /// A setter to adjust the error function.
+    ///
+    /// Should be picked accordingly to the last layer and the given task.
+    pub fn set_error_function(&mut self, error: Box<dyn Error>) {
+        self.error_function = error;
+    }
+
+    /// A setter to adjust the batch size.
+    ///
+    /// By default a batch size of 1 is used, which is equal to no batch-processing.
+    pub fn set_batch_size(&mut self, batch_size: usize) {
+        self.h_p.batch_size(batch_size);
+    }
+
+    /// A getter for the batch size.
+    pub fn get_batch_size(&self) -> usize {
+        self.h_p.get_batch_size()
+    }
+
+    /// A setter to adjust the learning rate.
+    ///
+    /// By default a learning rate of 0.002 is used.
+    pub fn set_learning_rate(&mut self, learning_rate: f32) {
+        self.h_p.set_learning_rate(learning_rate);
+    }
+
+    /// A getter for the learning rate.
+    pub fn get_learning_rate(&self) -> f32 {
+        self.h_p.get_learning_rate()
+    }
+
+    /// This function appends a custom layer to the neural network.
+    ///
+    /// This function might also be used to add a custom activation function to the neural network.
+    pub fn store_layer(&mut self, layer: Box<dyn Layer>) {
+        let input_shape = self.input_dims.last().unwrap().clone();
+        self.input_dims.push(layer.get_output_shape(input_shape));
+        self.layers.push(layer);
+    }
+
+    /// This function appends one of the implemented activation function to the neural network.
+    pub fn add_activation(&mut self, layer_kind: &str) {
+        let new_activation = NeuralNetwork::get_activation(layer_kind.to_string());
+        match new_activation {
+            Err(error) => {
+                eprintln!("{}, doing nothing", error);
+                return;
+            }
+            Ok(layer) => {
+                self.store_layer(layer);
+            }
+        }
+        match (self.error.as_str(), layer_kind) {
+            ("bce", "sigmoid") => self.from_logits = true,
+            ("cce", "softmax") => self.from_logits = true,
+            _ => self.from_logits = false,
+        }
+    }
+
+    /// This function appends a convolution layer to the neural network.
+    ///
+    /// Currently filter_shape.0 == filter_shape.1 is requred.  
+    /// If padding > 0 then the x (and if available y) dimension are padded with zeros at both sides.  
+    /// E.g. For padding == 1 and x=y=2 we might receive:   
+    /// 0000   
+    /// 0ab0   
+    /// 0cd0   
+    /// 0000   
+    /// Currently the backpropagation of the error in the convolution layer is not implemented.   
+    /// Adding a convolution layer therefore only works if this layer is the first layer in the neural network.
+    pub fn add_convolution(
+        &mut self,
+        filter_shape: (usize, usize),
+        filter_number: usize,
+        padding: usize,
+    ) {
+        let filter_depth: usize;
+        let input_dim = self.input_dims.last().unwrap().clone();
+        assert!(
+            input_dim.len() == 2 || input_dim.len() == 3,
+            "only implemented conv for 2d or 3d input! {}",
+            input_dim.len()
+        );
+        if input_dim.len() == 2 {
+            filter_depth = 1;
+        } else {
+            filter_depth = input_dim[0];
+        }
+        let conv_layer = ConvolutionLayer2D::new(
+            filter_shape,
+            filter_depth,
+            filter_number,
+            padding,
+            self.h_p.batch_size,
+            self.h_p.learning_rate,
+            self.optimizer_function.clone_box(),
+        );
+        self.store_layer(Box::new(conv_layer));
+        self.from_logits = false;
+    }
+
+    /// This function appends a dense (also called fully_conected) layer to the neural network.
+    pub fn add_dense(&mut self, output_dim: usize) {
+        if output_dim == 0 {
+            eprintln!("output dimension should be > 0! Doing nothing!");
+            return;
+        }
+        let input_dims = self.input_dims.last().unwrap();
+        if input_dims.len() > 1 {
+            eprintln!("Dense just accepts 1d input! Doing nothing!");
+            return;
+        }
+        let dense_layer = DenseLayer::new(
+            input_dims[0],
+            output_dim,
+            self.h_p.batch_size,
+            self.h_p.learning_rate,
+            self.optimizer_function.clone_box(),
+        );
+        self.store_layer(Box::new(dense_layer));
+        self.from_logits = false;
+    }
+
+    /// This function appends a dropout layer to the neural network.
+    ///
+    /// The dropout probability has to ly in the range [0,1], where   
+    /// 0 means that this layer just outputs zeros,  
+    /// 1 means that this layer outputs the (unchanged) input,
+    /// any value x in between means that input elements are set to zero with a probability of x.
+    pub fn add_dropout(&mut self, dropout_prob: f32) {
+        if dropout_prob < 0. || dropout_prob > 1. {
+            eprintln!("dropout probability has to be between 0. and 1.");
+            return;
+        }
+        let dropout_layer = DropoutLayer::new(dropout_prob);
+        self.store_layer(Box::new(dropout_layer));
+        self.from_logits = false;
+    }
+
+    /// This function appends a flatten layer to the neural network.
+    ///
+    /// 1d input remains unchanged.
+    /// 2d or higher dimensional input is reshaped into a 1d array.
+    pub fn add_flatten(&mut self) {
+        let input_dims = self.input_dims.last().unwrap();
+        if input_dims.len() == 1 {
+            eprintln!("Input dimension is already one! Doing nothing!");
+            return;
+        }
+        let flatten_layer = FlattenLayer::new(input_dims.to_vec());
+        self.store_layer(Box::new(flatten_layer));
+        self.from_logits = false;
+    }
+
+    fn print_separator(&self, separator: &str) {
+        println!(
+            "{}",
+            std::iter::repeat(separator).take(70).collect::<String>()
+        );
+    }
+
+    /// This function prints an overview of the current neural network.
+    pub fn print_setup(&self) {
+        println!(
+            "\nModel: \"sequential\" {:>20} Input shape: {:?}",
+            "", self.input_dims[0]
+        );
+        self.print_separator("─");
+        println!(
+            "{:<20} {:^20} {:>20}",
+            "Layer (type)".to_string(),
+            "Output Shape".to_string(),
+            "Param #".to_string()
+        );
+        self.print_separator("═");
+        for i in 0..self.layers.len() {
+            let layer_type = format!("{:<20}", self.layers[i].get_type());
+            let layer_params = format!("{:>20}", self.layers[i].get_num_parameter());
+            let output_shape = format!("{:?}", &self.input_dims[i + 1]);
+            println!("{} {:^20} {}", layer_type, output_shape, layer_params);
+            self.print_separator("─");
+        }
+        println!(
+            "{:<35} {:>30}",
+            "Error function:".to_string(),
+            self.error_function.get_type()
+        );
+        println!(
+            "{:<35} {:>30}",
+            "Optimizer:".to_string(),
+            self.optimizer_function.get_type()
+        );
+        println!(
+            "{:<35} {:>30}",
+            "using from_logits optimization:".to_string(),
+            self.from_logits
+        );
+        self.print_separator("─");
+    }
+
+    /// This function handles the inference on 1d input.
+    pub fn predict1d(&self, input: Array1<f32>) -> Array1<f32> {
