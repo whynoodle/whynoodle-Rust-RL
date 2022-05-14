@@ -20,4 +20,6 @@ pub mod nn;
 pub mod optimizer;
 
 /// This submodule offers stateless layers and functions.
-pub mo
+pub mod functional;
+
+mod tests;
