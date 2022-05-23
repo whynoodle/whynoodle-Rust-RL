@@ -8,4 +8,13 @@ pub struct AdaGrad {
 }
 
 impl AdaGrad {
-    /// No p
+    /// No parameters available.
+    pub fn new() -> Self {
+        AdaGrad {
+            previous_sum_squared: Array::zeros(0).into_dyn(),
+        }
+    }
+}
+
+impl Optimizer for AdaGrad {
+    fn get_type(&self) -> Strin
