@@ -17,4 +17,10 @@ impl AdaGrad {
 }
 
 impl Optimizer for AdaGrad {
-    fn get_type(&self) -> Strin
+    fn get_type(&self) -> String {
+        format!("AdaGrad")
+    }
+    fn set_input_shape(&mut self, shape: Vec<usize>) {
+        self.previous_sum_squared = Array::zeros(shape);
+    }
+    fn optimize(&mut self, delta_w: ArrayD<f32>) -> Array
