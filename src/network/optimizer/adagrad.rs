@@ -23,4 +23,8 @@ impl Optimizer for AdaGrad {
     fn set_input_shape(&mut self, shape: Vec<usize>) {
         self.previous_sum_squared = Array::zeros(shape);
     }
-    fn optimize(&mut self, delta_w: ArrayD<f32>) -> Array
+    fn optimize(&mut self, delta_w: ArrayD<f32>) -> ArrayD<f32> {
+        self.previous_sum_squared =
+            self.previous_sum_squared.clone() + delta_w.mapv(|x| x.powf(2.));
+        delta_w / self.previous_sum_squared.mapv(f32::sqrt)
+ 
