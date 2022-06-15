@@ -27,4 +27,10 @@ impl Optimizer for AdaGrad {
         self.previous_sum_squared =
             self.previous_sum_squared.clone() + delta_w.mapv(|x| x.powf(2.));
         delta_w / self.previous_sum_squared.mapv(f32::sqrt)
- 
+    }
+    fn optimize1d(&mut self, delta_w: Array1<f32>) -> Array1<f32> {
+        self.optimize(delta_w.into_dyn())
+            .into_dimensionality::<Ix1>()
+            .unwrap()
+    }
+    fn optimize
