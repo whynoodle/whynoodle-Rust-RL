@@ -38,4 +38,10 @@ impl Optimizer for AdaGrad {
             .into_dimensionality::<Ix2>()
             .unwrap()
     }
-    fn optimize3d(&mut self, delta_w: Ar
+    fn optimize3d(&mut self, delta_w: Array3<f32>) -> Array3<f32> {
+        self.optimize(delta_w.into_dyn())
+            .into_dimensionality::<Ix3>()
+            .unwrap()
+    }
+    fn clone_box(&self) -> Box<dyn Optimizer> {
+        Box::new
