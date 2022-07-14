@@ -44,4 +44,6 @@ impl Optimizer for AdaGrad {
             .unwrap()
     }
     fn clone_box(&self) -> Box<dyn Optimizer> {
-        Box::new
+        Box::new(Clone::clone(self))
+    }
+}
