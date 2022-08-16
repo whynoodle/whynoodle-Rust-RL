@@ -12,4 +12,13 @@ pub struct Adam {
 }
 
 impl Default for Adam {
-    fn default()
+    fn default() -> Self {
+        Adam::new(0.9, 0.999)
+    }
+}
+
+impl Adam {
+    /// Common values for beta1 and beta2 are 0.9 and 0.999.
+    pub fn new(beta1: f32, beta2: f32) -> Self {
+        Adam {
+    
