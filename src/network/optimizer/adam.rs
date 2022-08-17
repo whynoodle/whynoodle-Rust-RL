@@ -21,4 +21,13 @@ impl Adam {
     /// Common values for beta1 and beta2 are 0.9 and 0.999.
     pub fn new(beta1: f32, beta2: f32) -> Self {
         Adam {
-    
+            previous_sum: Array::zeros(0).into_dyn(),
+            previous_sum_squared: Array::zeros(0).into_dyn(),
+            beta1,
+            beta2,
+            t: 1.,
+        }
+    }
+}
+
+impl Optimizer
