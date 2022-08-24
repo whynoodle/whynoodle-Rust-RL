@@ -36,4 +36,8 @@ impl Optimizer for Adam {
     }
     fn set_input_shape(&mut self, shape: Vec<usize>) {
         self.previous_sum = Array::zeros(shape.clone());
-        self.previous_sum_squared = Array::z
+        self.previous_sum_squared = Array::zeros(shape);
+    }
+    fn optimize(&mut self, delta_w: ArrayD<f32>) -> ArrayD<f32> {
+        self.previous_sum = &self.previous_sum * self.beta1 + delta_w.clone() * (1. - self.beta1);
+        self.previo
