@@ -30,4 +30,10 @@ impl Adam {
     }
 }
 
-impl Optimizer
+impl Optimizer for Adam {
+    fn get_type(&self) -> String {
+        format!("Adam")
+    }
+    fn set_input_shape(&mut self, shape: Vec<usize>) {
+        self.previous_sum = Array::zeros(shape.clone());
+        self.previous_sum_squared = Array::z
