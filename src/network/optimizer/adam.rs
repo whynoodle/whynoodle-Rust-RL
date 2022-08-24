@@ -40,4 +40,6 @@ impl Optimizer for Adam {
     }
     fn optimize(&mut self, delta_w: ArrayD<f32>) -> ArrayD<f32> {
         self.previous_sum = &self.previous_sum * self.beta1 + delta_w.clone() * (1. - self.beta1);
-        self.previo
+        self.previous_sum_squared = &self.previous_sum_squared * self.beta2
+            + delta_w.mapv(|x| f32::powf(x, 2.)) * (1. - self.beta2);
+        let sum_bias_corrected = self.previous_sum.clone() / (1. - self.beta1.powf(se
