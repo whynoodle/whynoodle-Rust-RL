@@ -42,4 +42,8 @@ impl Optimizer for Adam {
         self.previous_sum = &self.previous_sum * self.beta1 + delta_w.clone() * (1. - self.beta1);
         self.previous_sum_squared = &self.previous_sum_squared * self.beta2
             + delta_w.mapv(|x| f32::powf(x, 2.)) * (1. - self.beta2);
-        let sum_bias_corrected = self.previous_sum.clone() / (1. - self.beta1.powf(se
+        let sum_bias_corrected = self.previous_sum.clone() / (1. - self.beta1.powf(self.t));
+        let sum_squared_bias_corrected =
+            self.previous_sum_squared.clone() / (1. - self.beta2.powf(self.t));
+        self.t += 1.;
+        sum_bias_corrected / (sum_squa
