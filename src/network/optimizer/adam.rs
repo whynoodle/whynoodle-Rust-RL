@@ -49,4 +49,10 @@ impl Optimizer for Adam {
         sum_bias_corrected / (sum_squared_bias_corrected.mapv(f32::sqrt) + 1e-8)
         //self.previous_sum.clone() / (self.previous_sum_squared.mapv(f32::sqrt) + 1e-8)
     }
-    fn optimize1d(&mut self, delta_w: Array1<f32>) -> Array1<f3
+    fn optimize1d(&mut self, delta_w: Array1<f32>) -> Array1<f32> {
+        self.optimize(delta_w.into_dyn())
+            .into_dimensionality::<Ix1>()
+            .unwrap()
+    }
+    fn optimize2d(&mut self, delta_w: Array2<f32>) -> Array2<f32> {
+        self.o
