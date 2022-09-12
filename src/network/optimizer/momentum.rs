@@ -18,3 +18,36 @@ impl Momentum {
             decay_rate,
         }
     }
+}
+
+impl Optimizer for Momentum {
+    fn get_type(&self) -> String {
+        format!("Momentum")
+    }
+    fn set_input_shape(&mut self, shape: Vec<usize>) {
+        self.previous_delta = Array::zeros(shape);
+    }
+    fn optimize(&mut self, mut delta_w: ArrayD<f32>) -> ArrayD<f32> {
+        delta_w = delta_w + &self.previous_delta * self.decay_rate;
+        self.previous_delta = delta_w.clone();
+        delta_w
+    }
+    fn optimize1d(&mut self, delta_w: Array1<f32>) -> Array1<f32> {
+        self.optimize(delta_w.into_dyn())
+            .into_dimensionality::<Ix1>()
+            .unwrap()
+    }
+    fn optimize2d(&mut self, delta_w: Array2<f32>) -> Array2<f32> {
+        self.optimize(delta_w.into_dyn())
+            .into_dimensionality::<Ix2>()
+            .unwrap()
+    }
+    fn optimize3d(&mut self, delta_w: Array3<f32>) -> Array3<f32> {
+        self.optimize(delta_w.into_dyn())
+            .into_dimensionality::<Ix3>()
+            .unwrap()
+    }
+    fn clone_box(&self) -> Box<dyn Optimizer> {
+        Box::new(Clone::clone(self))
+    }
+}
