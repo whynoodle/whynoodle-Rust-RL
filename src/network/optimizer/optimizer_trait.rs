@@ -7,4 +7,7 @@ use ndarray::{Array1, Array2, Array3, ArrayD};
 pub trait Optimizer: Send + Sync {
     ///
     fn set_input_shape(&mut self, shape: Vec<usize>);
-    /// Returns a string identifying the specific optimizer type. Examples are "Adam", "Momentum", 
+    /// Returns a string identifying the specific optimizer type. Examples are "Adam", "Momentum", and "None" for basic sgd.
+    fn get_type(&self) -> String;
+    /// Applies the specific optimization to dynamically shaped arrays.
+    fn optimize(&mut self, weight_update: Array
