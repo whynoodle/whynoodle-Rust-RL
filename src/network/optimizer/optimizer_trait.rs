@@ -14,4 +14,8 @@ pub trait Optimizer: Send + Sync {
     /// A wrapper around optimize().
     fn optimize1d(&mut self, weight_update: Array1<f32>) -> Array1<f32>;
     /// A wrapper around optimize()
-    fn o
+    fn optimize2d(&mut self, weight_update: Array2<f32>) -> Array2<f32>;
+    /// A wrapper around optimize()
+    fn optimize3d(&mut self, weight_update: Array3<f32>) -> Array3<f32>;
+
+    /// Allows each layer to cre
