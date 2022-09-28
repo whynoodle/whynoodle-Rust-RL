@@ -10,4 +10,8 @@ pub trait Optimizer: Send + Sync {
     /// Returns a string identifying the specific optimizer type. Examples are "Adam", "Momentum", and "None" for basic sgd.
     fn get_type(&self) -> String;
     /// Applies the specific optimization to dynamically shaped arrays.
-    fn optimize(&mut self, weight_update: Array
+    fn optimize(&mut self, weight_update: ArrayD<f32>) -> ArrayD<f32>;
+    /// A wrapper around optimize().
+    fn optimize1d(&mut self, weight_update: Array1<f32>) -> Array1<f32>;
+    /// A wrapper around optimize()
+    fn o
