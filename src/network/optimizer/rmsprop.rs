@@ -28,4 +28,8 @@ impl Optimizer for RMSProp {
     fn optimize(&mut self, delta_w: ArrayD<f32>) -> ArrayD<f32> {
         self.previous_sum_squared = self.previous_sum_squared.clone() * self.decay_rate
             + delta_w.mapv(|x| x.powf(2.)) * (1. - self.decay_rate);
-        delta_
+        delta_w / self.previous_sum_squared.mapv(f32::sqrt)
+    }
+    fn optimize1d(&mut self, delta_w: Array1<f32>) -> Array1<f32> {
+        self.optimize(delta_w.into_dyn())
+            .i
