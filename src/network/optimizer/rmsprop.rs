@@ -10,4 +10,13 @@ pub struct RMSProp {
 
 impl RMSProp {
     /// A constructor including the decay rate. A common value is 0.9.
-    pub fn new(decay_rate: f32) -> Sel
+    pub fn new(decay_rate: f32) -> Self {
+        RMSProp {
+            previous_sum_squared: Array::zeros(0).into_dyn(),
+            decay_rate,
+        }
+    }
+}
+
+impl Optimizer for RMSProp {
+    fn get_type(&self) ->
