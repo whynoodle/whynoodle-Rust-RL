@@ -25,4 +25,7 @@ impl Optimizer for RMSProp {
     fn set_input_shape(&mut self, shape: Vec<usize>) {
         self.previous_sum_squared = Array::zeros(shape);
     }
-    fn optimize(&mut self, delt
+    fn optimize(&mut self, delta_w: ArrayD<f32>) -> ArrayD<f32> {
+        self.previous_sum_squared = self.previous_sum_squared.clone() * self.decay_rate
+            + delta_w.mapv(|x| x.powf(2.)) * (1. - self.decay_rate);
+        delta_
