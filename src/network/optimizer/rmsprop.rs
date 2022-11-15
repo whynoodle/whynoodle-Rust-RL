@@ -19,4 +19,10 @@ impl RMSProp {
 }
 
 impl Optimizer for RMSProp {
-    fn get_type(&self) ->
+    fn get_type(&self) -> String {
+        format!("RMSProp")
+    }
+    fn set_input_shape(&mut self, shape: Vec<usize>) {
+        self.previous_sum_squared = Array::zeros(shape);
+    }
+    fn optimize(&mut self, delt
