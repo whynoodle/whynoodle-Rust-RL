@@ -32,4 +32,9 @@ impl Optimizer for RMSProp {
     }
     fn optimize1d(&mut self, delta_w: Array1<f32>) -> Array1<f32> {
         self.optimize(delta_w.into_dyn())
-            .i
+            .into_dimensionality::<Ix1>()
+            .unwrap()
+    }
+    fn optimize2d(&mut self, delta_w: Array2<f32>) -> Array2<f32> {
+        self.optimize(delta_w.into_dyn())
+            .into_d
