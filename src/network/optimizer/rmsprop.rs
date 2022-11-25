@@ -43,3 +43,9 @@ impl Optimizer for RMSProp {
     fn optimize3d(&mut self, delta_w: Array3<f32>) -> Array3<f32> {
         self.optimize(delta_w.into_dyn())
             .into_dimensionality::<Ix3>()
+            .unwrap()
+    }
+    fn clone_box(&self) -> Box<dyn Optimizer> {
+        Box::new(Clone::clone(self))
+    }
+}
