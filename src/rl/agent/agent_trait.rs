@@ -11,4 +11,9 @@ pub trait Agent {
     /// Advanced agents shouldn't need knowledge about the used encoding.
     fn get_move(&mut self, env: Array2<f32>, actions: Array1<bool>, reward: f32) -> usize;
 
-    /// Informs the agent that the current epoch has finished and tells him about hi
+    /// Informs the agent that the current epoch has finished and tells him about his final result.
+    ///
+    /// Common values might be -1./0./1. if the agent achieved a loss/draw/win.
+    fn finish_round(&mut self, result: i8, final_state: Array2<f32>);
+
+    /// Update
