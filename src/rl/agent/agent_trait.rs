@@ -16,4 +16,8 @@ pub trait Agent {
     /// Common values might be -1./0./1. if the agent achieved a loss/draw/win.
     fn finish_round(&mut self, result: i8, final_state: Array2<f32>);
 
-    /// Update
+    /// Updates the exploration rate if it lies in the range [0,1].
+    fn set_exploration_rate(&mut self, e: f32) -> Result<(), String>;
+
+    /// Returns the current exploration rate.
+    fn ge
