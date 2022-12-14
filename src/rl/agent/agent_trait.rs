@@ -25,4 +25,6 @@ pub trait Agent {
     /// Updates the learning rate if it lies in the range [0,1].
     fn set_learning_rate(&mut self, e: f32) -> Result<(), String>;
 
-    /// Returns the current lea
+    /// Returns the current learning rate.
+    fn get_learning_rate(&self) -> f32;
+}
