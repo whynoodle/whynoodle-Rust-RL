@@ -20,4 +20,9 @@ pub trait Agent {
     fn set_exploration_rate(&mut self, e: f32) -> Result<(), String>;
 
     /// Returns the current exploration rate.
-    fn ge
+    fn get_exploration_rate(&self) -> f32;
+
+    /// Updates the learning rate if it lies in the range [0,1].
+    fn set_learning_rate(&mut self, e: f32) -> Result<(), String>;
+
+    /// Returns the current lea
