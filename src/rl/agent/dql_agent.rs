@@ -1,3 +1,9 @@
 use super::results::RunningResults;
 use crate::network::nn::NeuralNetwork;
-use crate::
+use crate::rl::agent::Agent;
+use crate::rl::algorithms::DQlearning;
+use ndarray::{Array1, Array2};
+
+/// An agent using Deep-Q-Learning, based on a small neural network.
+pub struct DQLAgent {
+    dqlearning: DQlearnin
