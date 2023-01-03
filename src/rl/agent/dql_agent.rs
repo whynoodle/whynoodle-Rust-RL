@@ -17,4 +17,15 @@ impl DQLAgent {
     pub fn new(exploration: f32, batch_size: usize, nn: NeuralNetwork) -> Self {
         DQLAgent {
             results: RunningResults::new(100, true),
-            dqlearning: DQlearning::new(exploration, batch_size, nn, fa
+            dqlearning: DQlearning::new(exploration, batch_size, nn, false),
+        }
+    }
+}
+
+impl Agent for DQLAgent {
+    fn get_id(&self) -> String {
+        "dqlearning agent".to_string()
+    }
+
+    fn finish_round(&mut self, reward: i8, final_state: Array2<f32>) {
+        self.re
