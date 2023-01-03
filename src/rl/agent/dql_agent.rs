@@ -28,4 +28,8 @@ impl Agent for DQLAgent {
     }
 
     fn finish_round(&mut self, reward: i8, final_state: Array2<f32>) {
-        self.re
+        self.results.add(reward.into());
+        self.dqlearning.finish_round(reward.into(), final_state);
+    }
+
+    fn get_move(&mut self, board: Array2<f32>, actions: Array1<bool>, reward: f32) -> 
