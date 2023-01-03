@@ -32,4 +32,12 @@ impl Agent for DQLAgent {
         self.dqlearning.finish_round(reward.into(), final_state);
     }
 
-    fn get_move(&mut self, board: Array2<f32>, actions: Array1<bool>, reward: f32) -> 
+    fn get_move(&mut self, board: Array2<f32>, actions: Array1<bool>, reward: f32) -> usize {
+        self.dqlearning.get_move(board, actions, reward)
+    }
+
+    fn get_learning_rate(&self) -> f32 {
+        self.dqlearning.get_learning_rate()
+    }
+
+    fn set_learning_rate(&mut self
