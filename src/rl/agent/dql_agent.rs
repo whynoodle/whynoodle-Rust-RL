@@ -14,4 +14,7 @@ pub struct DQLAgent {
 //
 impl DQLAgent {
     /// A constructor including an initial exploration rate.
-    pub fn n
+    pub fn new(exploration: f32, batch_size: usize, nn: NeuralNetwork) -> Self {
+        DQLAgent {
+            results: RunningResults::new(100, true),
+            dqlearning: DQlearning::new(exploration, batch_size, nn, fa
