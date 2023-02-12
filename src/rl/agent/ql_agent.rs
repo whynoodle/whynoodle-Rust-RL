@@ -7,4 +7,11 @@ use crate::rl::agent::Agent;
 /// An agent working on a classical q-table.
 pub struct QLAgent {
     qlearning: Qlearning,
-    results: Running
+    results: RunningResults,
+}
+
+// based on Q-learning using a HashMap as table
+//
+impl QLAgent {
+    /// A constructor with an initial exploration rate.
+    pub fn new(exploration: f32, learning: f32, action_space_length: usize) -> 
