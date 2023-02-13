@@ -14,4 +14,13 @@ pub struct QLAgent {
 //
 impl QLAgent {
     /// A constructor with an initial exploration rate.
-    pub fn new(exploration: f32, learning: f32, action_space_length: usize) -> 
+    pub fn new(exploration: f32, learning: f32, action_space_length: usize) -> Self {
+        QLAgent {
+            qlearning: Qlearning::new(exploration, learning, action_space_length),
+            results: RunningResults::new(100, true),
+        }
+    }
+}
+
+impl Agent for QLAgent {
+    fn ge
