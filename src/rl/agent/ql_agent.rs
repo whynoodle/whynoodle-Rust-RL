@@ -23,4 +23,10 @@ impl QLAgent {
 }
 
 impl Agent for QLAgent {
-    fn ge
+    fn get_id(&self) -> String {
+        "qlearning agent".to_string()
+    }
+
+    fn finish_round(&mut self, reward: i8, final_state: Array2<f32>) {
+        self.results.add(reward.into());
+        self.qlear
