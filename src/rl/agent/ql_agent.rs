@@ -29,4 +29,8 @@ impl Agent for QLAgent {
 
     fn finish_round(&mut self, reward: i8, final_state: Array2<f32>) {
         self.results.add(reward.into());
-        self.qlear
+        self.qlearning.finish_round(reward.into(), final_state);
+    }
+
+    fn get_move(&mut self, board: Array2<f32>, actions: Array1<bool>, reward: f32) -> usize {
+        self.qlearning.get_move(board, actions, reward
