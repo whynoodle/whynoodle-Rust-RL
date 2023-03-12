@@ -33,4 +33,11 @@ impl Agent for QLAgent {
     }
 
     fn get_move(&mut self, board: Array2<f32>, actions: Array1<bool>, reward: f32) -> usize {
-        self.qlearning.get_move(board, actions, reward
+        self.qlearning.get_move(board, actions, reward)
+    }
+
+    fn set_learning_rate(&mut self, lr: f32) -> Result<(), String> {
+        if !(0.0..=1.).contains(&lr) {
+            return Err("learning rate must be in [0,1]!".to_string());
+        }
+        self.qlearning.
