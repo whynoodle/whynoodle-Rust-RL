@@ -40,4 +40,13 @@ impl Agent for QLAgent {
         if !(0.0..=1.).contains(&lr) {
             return Err("learning rate must be in [0,1]!".to_string());
         }
-        self.qlearning.
+        self.qlearning.set_learning_rate(lr)?;
+        Ok(())
+    }
+
+    fn get_learning_rate(&self) -> f32 {
+        self.qlearning.get_learning_rate()
+    }
+
+    fn get_exploration_rate(&self) -> f32 {
+        self.qlearning.get_exploratio
