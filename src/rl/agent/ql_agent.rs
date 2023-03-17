@@ -49,4 +49,10 @@ impl Agent for QLAgent {
     }
 
     fn get_exploration_rate(&self) -> f32 {
-        self.qlearning.get_exploratio
+        self.qlearning.get_exploration_rate()
+    }
+
+    fn set_exploration_rate(&mut self, e: f32) -> Result<(), String> {
+        if !(0.0..=1.).contains(&e) {
+            return Err("exploration rate must be in [0,1]!".to_string());
+ 
