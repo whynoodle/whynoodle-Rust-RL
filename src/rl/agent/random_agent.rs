@@ -7,4 +7,15 @@ use ndarray::{Array1, Array2};
 /// All input is ignored except of the vector of possible actions.
 /// All allowed actions are considered with an equal probability.
 #[derive(Default)]
-pub struc
+pub struct RandomAgent {}
+
+impl RandomAgent {
+    /// Returns a new instance of a random acting agent.
+    pub fn new() -> Self {
+        RandomAgent {}
+    }
+}
+
+impl Agent for RandomAgent {
+    fn get_id(&self) -> String {
+    
