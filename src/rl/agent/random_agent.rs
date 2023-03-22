@@ -18,4 +18,11 @@ impl RandomAgent {
 
 impl Agent for RandomAgent {
     fn get_id(&self) -> String {
-    
+        "random agent".to_string()
+    }
+
+    fn get_move(&mut self, _: Array2<f32>, actions: Array1<bool>, _: f32) -> usize {
+        utils::get_random_true_entry(actions)
+    }
+
+    fn finish_ro
