@@ -12,4 +12,8 @@ pub struct DQlearning {
     nn: NeuralNetwork,
     use_ddqn: bool,
     target_nn: NeuralNetwork,
-    tar
+    target_update_counter: usize,
+    target_update_every: usize,
+    exploration: f32,
+    discount_factor: f32,
+    // last_turn: (board before last own move, allowed moves, NN output, move choosen from N
