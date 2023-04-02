@@ -16,4 +16,11 @@ pub struct DQlearning {
     target_update_every: usize,
     exploration: f32,
     discount_factor: f32,
-    // last_turn: (board before last own move, allowed moves, NN output, move choosen from N
+    // last_turn: (board before last own move, allowed moves, NN output, move choosen from NN)
+    last_turn: (Array2<f32>, Array1<f32>, Array1<f32>, usize),
+    replay_buffer: ReplayBuffer<Array2<f32>>,
+    rng: ThreadRng,
+}
+
+impl DQlearning {
+    // TODO add mini_batch_size
