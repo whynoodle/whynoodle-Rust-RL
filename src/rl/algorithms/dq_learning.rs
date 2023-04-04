@@ -23,4 +23,7 @@ pub struct DQlearning {
 }
 
 impl DQlearning {
-    // TODO add mini_batch_size
+    // TODO add mini_batch_size to bs, so that bs % mbs == 0
+    pub fn new(exploration: f32, batch_size: usize, mut nn: NeuralNetwork, use_ddqn: bool) -> Self {
+        if nn.get_batch_size() % batch_size != 0 {
+            e
