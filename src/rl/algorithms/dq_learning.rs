@@ -26,4 +26,8 @@ impl DQlearning {
     // TODO add mini_batch_size to bs, so that bs % mbs == 0
     pub fn new(exploration: f32, batch_size: usize, mut nn: NeuralNetwork, use_ddqn: bool) -> Self {
         if nn.get_batch_size() % batch_size != 0 {
-            e
+            eprintln!(
+                "not implemented yet, unsure how to store 
+                intermediate vals before weight updates"
+            );
+            unimplemented!
