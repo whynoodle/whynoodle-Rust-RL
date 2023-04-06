@@ -30,4 +30,10 @@ impl DQlearning {
                 "not implemented yet, unsure how to store 
                 intermediate vals before weight updates"
             );
-            unimplemented!
+            unimplemented!();
+        }
+        nn.set_batch_size(batch_size);
+        let target_nn = if use_ddqn {
+            nn.clone()
+        } else {
+            NeuralNetwork::new1d(0, "none".to_string(), "none".to_
