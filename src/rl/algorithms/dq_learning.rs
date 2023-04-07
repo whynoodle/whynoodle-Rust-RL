@@ -36,4 +36,11 @@ impl DQlearning {
         let target_nn = if use_ddqn {
             nn.clone()
         } else {
-            NeuralNetwork::new1d(0, "none".to_string(), "none".to_
+            NeuralNetwork::new1d(0, "none".to_string(), "none".to_string())
+        };
+        let discount_factor = 0.95;
+        DQlearning {
+            use_ddqn,
+            target_nn,
+            target_update_counter: 0,
+            target_update_every: 20, // update
