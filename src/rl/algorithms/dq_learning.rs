@@ -43,4 +43,10 @@ impl DQlearning {
             use_ddqn,
             target_nn,
             target_update_counter: 0,
-            target_update_every: 20, // update
+            target_update_every: 20, // update after 5 episodes (entire games)
+            nn,
+            exploration,
+            last_turn: (
+                Default::default(),
+                Default::default(),
+                Default::defaul
