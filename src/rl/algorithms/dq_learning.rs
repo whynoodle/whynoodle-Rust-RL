@@ -49,4 +49,13 @@ impl DQlearning {
             last_turn: (
                 Default::default(),
                 Default::default(),
-                Default::defaul
+                Default::default(),
+                42,
+            ),
+            replay_buffer: ReplayBuffer::new(batch_size, 2_000),
+            discount_factor,
+            rng: rand::thread_rng(),
+        }
+    }
+
+    pub fn 
