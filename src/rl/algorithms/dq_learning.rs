@@ -64,4 +64,11 @@ impl DQlearning {
 
     pub fn set_learning_rate(&mut self, lr: f32) -> Result<(), String> {
         if !(0.0..=1.).contains(&lr) {
-            return Err("learning 
+            return Err("learning rate must be in [0,1]!".to_string());
+        }
+        self.nn.set_learning_rate(lr);
+        Ok(())
+    }
+
+    pub fn get_exploration_rate(&self) -> f32 {
+        self.ex
