@@ -58,4 +58,10 @@ impl DQlearning {
         }
     }
 
-    pub fn 
+    pub fn get_learning_rate(&self) -> f32 {
+        self.nn.get_learning_rate()
+    }
+
+    pub fn set_learning_rate(&mut self, lr: f32) -> Result<(), String> {
+        if !(0.0..=1.).contains(&lr) {
+            return Err("learning 
