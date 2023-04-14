@@ -86,3 +86,9 @@ impl DQlearning {
 impl DQlearning {
     // learn based on last action and their result
     pub fn finish_round(&mut self, mut final_reward: f32, s1: Array2<f32>) {
+        if f32::abs(final_reward) < 1e-4 {
+            final_reward = 0.5; // smaller bonus for a draw
+        }
+
+        self.replay_buffer.add_memory(Observation::new(
+            sel
