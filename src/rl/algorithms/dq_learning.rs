@@ -76,4 +76,13 @@ impl DQlearning {
 
     pub fn set_exploration_rate(&mut self, e: f32) -> Result<(), String> {
         if !(0.0..=1.).contains(&e) {
-            return Err("exploration rate must be in [0,1]!".to_string(
+            return Err("exploration rate must be in [0,1]!".to_string());
+        }
+        self.exploration = e;
+        Ok(())
+    }
+}
+
+impl DQlearning {
+    // learn based on last action and their result
+    pub fn finish_round(&mut self, mut final_reward: f32, s1: Array2<f32>) {
