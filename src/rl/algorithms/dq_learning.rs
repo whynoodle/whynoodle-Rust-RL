@@ -91,4 +91,12 @@ impl DQlearning {
         }
 
         self.replay_buffer.add_memory(Observation::new(
-            sel
+            self.last_turn.0.clone(),
+            self.last_turn.3,
+            s1,
+            final_reward,
+            true,
+        ));
+        self.target_update_counter += 1;
+        self.learn();
+   
