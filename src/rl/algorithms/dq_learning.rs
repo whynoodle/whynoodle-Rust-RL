@@ -99,4 +99,12 @@ impl DQlearning {
         ));
         self.target_update_counter += 1;
         self.learn();
-   
+    }
+
+    pub fn get_move(
+        &mut self,
+        board_arr: Array2<f32>,
+        action_arr: Array1<bool>,
+        reward: f32,
+    ) -> usize {
+        let actions = action_arr.mapv(|x| i
