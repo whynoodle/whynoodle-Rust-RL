@@ -107,4 +107,7 @@ impl DQlearning {
         action_arr: Array1<bool>,
         reward: f32,
     ) -> usize {
-        let actions = action_arr.mapv(|x| i
+        let actions = action_arr.mapv(|x| if x { 1. } else { 0. });
+
+        // store every interesting action, as well as every 20% of the actions with zero-reward
+        if f32::abs(reward) > EPSILON || self.rng.gen::<f32>()
