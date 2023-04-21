@@ -110,4 +110,9 @@ impl DQlearning {
         let actions = action_arr.mapv(|x| if x { 1. } else { 0. });
 
         // store every interesting action, as well as every 20% of the actions with zero-reward
-        if f32::abs(reward) > EPSILON || self.rng.gen::<f32>()
+        if f32::abs(reward) > EPSILON || self.rng.gen::<f32>() < 0.2 {
+            self.replay_buffer.add_memory(Observation::new(
+                self.last_turn.0.clone(),
+                self.last_turn.3,
+                board_arr.clone(),
+             
