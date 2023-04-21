@@ -115,4 +115,12 @@ impl DQlearning {
                 self.last_turn.0.clone(),
                 self.last_turn.3,
                 board_arr.clone(),
-             
+                reward,
+                false,
+            ));
+        }
+        self.learn();
+
+        let board_with_channels = board_arr
+            .clone()
+            .into_shape((1, board_arr.shape()[0], boar
