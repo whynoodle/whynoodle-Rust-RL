@@ -126,4 +126,8 @@ impl DQlearning {
             .into_shape((1, board_arr.shape()[0], board_arr.shape()[1]))
             .unwrap();
         let predicted_moves = self.nn.predict3d(board_with_channels);
-        let legal_predicted_moves = predicted_moves.clone() * actions.
+        let legal_predicted_moves = predicted_moves.clone() * actions.clone();
+        let mut next_move = legal_predicted_moves.argmax().unwrap();
+
+        // shall we explore a random move?
+        // also select random move if predicted move not 
