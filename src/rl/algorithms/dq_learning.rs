@@ -123,4 +123,7 @@ impl DQlearning {
 
         let board_with_channels = board_arr
             .clone()
-            .into_shape((1, board_arr.shape()[0], boar
+            .into_shape((1, board_arr.shape()[0], board_arr.shape()[1]))
+            .unwrap();
+        let predicted_moves = self.nn.predict3d(board_with_channels);
+        let legal_predicted_moves = predicted_moves.clone() * actions.
