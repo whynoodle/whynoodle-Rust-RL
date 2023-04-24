@@ -133,4 +133,10 @@ impl DQlearning {
         // also select random move if predicted move not allowed
         // (e.g. legal_predicted_moves contains only 0's).
         if (self.exploration > self.rng.gen()) || (!action_arr[next_move]) {
-            next_move = utils::get_random_tru
+            next_move = utils::get_random_true_entry(action_arr);
+        }
+
+        // bookkeeping
+        self.last_turn = (board_arr, actions, predicted_moves, next_move);
+
+        //println!("action: {}, \t reward: {}", self.last_turn.3, rew
