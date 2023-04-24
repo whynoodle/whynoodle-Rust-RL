@@ -130,4 +130,7 @@ impl DQlearning {
         let mut next_move = legal_predicted_moves.argmax().unwrap();
 
         // shall we explore a random move?
-        // also select random move if predicted move not 
+        // also select random move if predicted move not allowed
+        // (e.g. legal_predicted_moves contains only 0's).
+        if (self.exploration > self.rng.gen()) || (!action_arr[next_move]) {
+            next_move = utils::get_random_tru
