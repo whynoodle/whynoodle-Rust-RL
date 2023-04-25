@@ -139,4 +139,13 @@ impl DQlearning {
         // bookkeeping
         self.last_turn = (board_arr, actions, predicted_moves, next_move);
 
-        //println!("action: {}, \t reward: {}", self.last_turn.3, rew
+        //println!("action: {}, \t reward: {}", self.last_turn.3, reward);
+
+        self.last_turn.3
+    }
+
+    fn learn(&mut self) {
+        if !self.replay_buffer.is_full() {
+            return;
+        }
+        let (s0_vec, actions, s1_vec, rewards, done) = self.rep
