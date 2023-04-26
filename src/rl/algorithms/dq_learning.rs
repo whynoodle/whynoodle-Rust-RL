@@ -153,4 +153,6 @@ impl DQlearning {
         let s1_arr = vec_to_arr(s1_vec);
         let done: Array1<f32> = done.mapv(|x| if !x { 1. } else { 0. });
 
-        let current_q_list: Array2<f
+        let current_q_list: Array2<f32> = self.nn.predict_batch(s0_arr.clone().into_dyn());
+        let future_q_list_1: Array2<f32> = self.nn.predict_batch(s1_arr.clone().into_dyn());
+        let future_q_list_2 = if self.use_ddq
