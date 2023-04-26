@@ -148,4 +148,9 @@ impl DQlearning {
         if !self.replay_buffer.is_full() {
             return;
         }
-        let (s0_vec, actions, s1_vec, rewards, done) = self.rep
+        let (s0_vec, actions, s1_vec, rewards, done) = self.replay_buffer.get_memories_SoA();
+        let s0_arr = vec_to_arr(s0_vec);
+        let s1_arr = vec_to_arr(s1_vec);
+        let done: Array1<f32> = done.mapv(|x| if !x { 1. } else { 0. });
+
+        let current_q_list: Array2<f
