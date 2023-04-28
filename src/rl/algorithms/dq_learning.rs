@@ -155,4 +155,10 @@ impl DQlearning {
 
         let current_q_list: Array2<f32> = self.nn.predict_batch(s0_arr.clone().into_dyn());
         let future_q_list_1: Array2<f32> = self.nn.predict_batch(s1_arr.clone().into_dyn());
-        let future_q_list_2 = if self.use_ddq
+        let future_q_list_2 = if self.use_ddqn {
+            self.target_nn.predict_batch(s1_arr.into_dyn())
+        } else {
+            self.nn.predict_batch(s1_arr.into_dyn())
+        };
+
+        let best_future_actions: Array
