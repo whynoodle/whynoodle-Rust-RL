@@ -164,4 +164,7 @@ impl DQlearning {
         let best_future_actions: Array1<usize> = argmax(future_q_list_1);
         let future_rewards: Array1<f32> = get_future_rewards(future_q_list_2, best_future_actions);
 
-        // TODO done vorziehen um nur bei nicht endzuständen zu predi
+        // TODO done vorziehen um nur bei nicht endzuständen zu predicten
+        let mut new_q_list: Array1<f32> = rewards + self.discount_factor * done * future_rewards;
+        new_q_list.mapv_inplace(|x| if x < 1. { x } else { 1. });
+        let targets = update_
