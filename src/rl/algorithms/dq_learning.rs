@@ -161,4 +161,7 @@ impl DQlearning {
             self.nn.predict_batch(s1_arr.into_dyn())
         };
 
-        let best_future_actions: Array
+        let best_future_actions: Array1<usize> = argmax(future_q_list_1);
+        let future_rewards: Array1<f32> = get_future_rewards(future_q_list_2, best_future_actions);
+
+        // TODO done vorziehen um nur bei nicht endzuständen zu predi
