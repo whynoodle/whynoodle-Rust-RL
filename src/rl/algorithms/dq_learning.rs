@@ -167,4 +167,9 @@ impl DQlearning {
         // TODO done vorziehen um nur bei nicht endzuständen zu predicten
         let mut new_q_list: Array1<f32> = rewards + self.discount_factor * done * future_rewards;
         new_q_list.mapv_inplace(|x| if x < 1. { x } else { 1. });
-        let targets = update_
+        let targets = update_targets(current_q_list, actions, new_q_list);
+
+        self.nn.train(s0_arr.into_dyn(), targets.into_dyn());
+
+        if self.use_ddqn && self.target_update_counter > self.target_update_every {
+            self.tar
