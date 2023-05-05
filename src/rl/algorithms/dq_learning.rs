@@ -172,4 +172,12 @@ impl DQlearning {
         self.nn.train(s0_arr.into_dyn(), targets.into_dyn());
 
         if self.use_ddqn && self.target_update_counter > self.target_update_every {
-            self.tar
+            self.target_nn = self.nn.clone();
+            // TODO improve, only copy weights later
+            // due to optimizer´s and such stuff
+            self.target_update_counter = 0;
+        }
+    }
+}
+
+fn get_future_r
