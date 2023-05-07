@@ -183,4 +183,13 @@ impl DQlearning {
 fn get_future_rewards(rewards_2d: Array2<f32>, indices: Array1<usize>) -> Array1<f32> {
     let mut best_rewards: Array1<f32> = Array1::zeros(indices.len());
     par_azip!((mut best_reward in best_rewards.outer_iter_mut(),
- 
+      rewards_1d in rewards_2d.outer_iter(),
+      index in &indices)
+    {
+        best_reward.fill(rewards_1d[*index]);
+    });
+    best_rewards
+}
+
+fn update_targets(
+    mut targets: Array2<f
