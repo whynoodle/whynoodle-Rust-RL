@@ -198,4 +198,12 @@ fn update_targets(
 ) -> Array2<f32> {
     par_azip!((mut target in targets.outer_iter_mut(),
                action in &actions,
-      
+               reward in &rewards)
+              {
+        target[*action] = *reward;
+    });
+    targets
+}
+
+fn vec_to_arr(input: Vec<Array2<f32>>) -> Array4<f32> {
+    let (bs, nrows, ncols) = (input.len()
