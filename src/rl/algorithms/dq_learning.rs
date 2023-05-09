@@ -192,4 +192,10 @@ fn get_future_rewards(rewards_2d: Array2<f32>, indices: Array1<usize>) -> Array1
 }
 
 fn update_targets(
-    mut targets: Array2<f
+    mut targets: Array2<f32>,
+    actions: Array1<usize>,
+    rewards: Array1<f32>,
+) -> Array2<f32> {
+    par_azip!((mut target in targets.outer_iter_mut(),
+               action in &actions,
+      
