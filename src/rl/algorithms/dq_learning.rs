@@ -206,4 +206,7 @@ fn update_targets(
 }
 
 fn vec_to_arr(input: Vec<Array2<f32>>) -> Array4<f32> {
-    let (bs, nrows, ncols) = (input.len()
+    let (bs, nrows, ncols) = (input.len(), input[0].nrows(), input[0].ncols());
+    let mut res = Array4::zeros((bs, 1, nrows, ncols));
+    par_azip!((mut out_entry in res.outer_iter_mut(), in_entry in &input) {
+      out_entry.assign(in_ent
