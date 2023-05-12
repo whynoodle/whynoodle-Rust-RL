@@ -209,4 +209,12 @@ fn vec_to_arr(input: Vec<Array2<f32>>) -> Array4<f32> {
     let (bs, nrows, ncols) = (input.len(), input[0].nrows(), input[0].ncols());
     let mut res = Array4::zeros((bs, 1, nrows, ncols));
     par_azip!((mut out_entry in res.outer_iter_mut(), in_entry in &input) {
-      out_entry.assign(in_ent
+      out_entry.assign(in_entry);
+    });
+    res.into_shape((bs, 1, nrows, ncols)).unwrap()
+}
+
+fn argmax(input: Array2<f32>) -> Array1<usize> {
+    let mut res: Array1<usize> = Array1::zeros(input.nrows());
+
+    par_azip!((mut out
