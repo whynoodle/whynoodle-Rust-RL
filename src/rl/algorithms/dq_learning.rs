@@ -217,4 +217,8 @@ fn vec_to_arr(input: Vec<Array2<f32>>) -> Array4<f32> {
 fn argmax(input: Array2<f32>) -> Array1<usize> {
     let mut res: Array1<usize> = Array1::zeros(input.nrows());
 
-    par_azip!((mut out
+    par_azip!((mut out_entry in res.outer_iter_mut(), in_entry in input.outer_iter()) {
+
+        let mut argmax = (0, f32::MIN);
+        for (i, &val) in in_entry.iter().enumerate() {
+            if val > argmax.1 {
