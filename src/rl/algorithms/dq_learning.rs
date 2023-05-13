@@ -222,3 +222,16 @@ fn argmax(input: Array2<f32>) -> Array1<usize> {
         let mut argmax = (0, f32::MIN);
         for (i, &val) in in_entry.iter().enumerate() {
             if val > argmax.1 {
+                argmax = (i, val);
+            }
+        }
+        //println!("{} {} {:}\n", argmax.0, argmax.1, in_entry);
+        out_entry.fill(argmax.0);
+    });
+
+    res
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+  
