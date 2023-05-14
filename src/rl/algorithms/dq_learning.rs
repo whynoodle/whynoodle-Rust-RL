@@ -241,4 +241,10 @@ mod tests {
         let input: Array2<f32> = array![[2., 1., 3.], [-0.4, -1., -2.2]];
         let output: Array1<usize> = array![2, 0];
         assert_eq!(output, argmax(input));
-   
+    }
+
+    #[test]
+    fn test_update_targets() {
+        let targets: Array2<f32> = array![[5., 2., 1.5, 4.], [3., 2.2, -1., 0.]];
+        let actions: Array1<usize> = array![2, 0];
+        let rewards:
