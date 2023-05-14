@@ -234,4 +234,11 @@ fn argmax(input: Array2<f32>) -> Array1<usize> {
 #[cfg(test)]
 mod tests {
     use super::*;
-  
+    use ndarray::array;
+
+    #[test]
+    fn test_argmax() {
+        let input: Array2<f32> = array![[2., 1., 3.], [-0.4, -1., -2.2]];
+        let output: Array1<usize> = array![2, 0];
+        assert_eq!(output, argmax(input));
+   
