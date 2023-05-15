@@ -247,4 +247,7 @@ mod tests {
     fn test_update_targets() {
         let targets: Array2<f32> = array![[5., 2., 1.5, 4.], [3., 2.2, -1., 0.]];
         let actions: Array1<usize> = array![2, 0];
-        let rewards:
+        let rewards: Array1<f32> = array![42., 0.];
+        let output: Array2<f32> = array![[5., 2., 42., 4.], [0., 2.2, -1., 0.]];
+        assert_eq!(update_targets(targets, actions, rewards), output);
+   
