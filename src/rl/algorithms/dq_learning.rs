@@ -250,4 +250,5 @@ mod tests {
         let rewards: Array1<f32> = array![42., 0.];
         let output: Array2<f32> = array![[5., 2., 42., 4.], [0., 2.2, -1., 0.]];
         assert_eq!(update_targets(targets, actions, rewards), output);
-   
+    }
+}
