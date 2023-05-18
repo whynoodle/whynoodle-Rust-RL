@@ -20,4 +20,10 @@ pub struct Qlearning {
 
 const EPSILON: f32 = 1e-4;
 
-// based on Q-learni
+// based on Q-learning using a HashMap as table
+//
+impl Qlearning {
+    pub fn new(exploration: f32, learning_rate: f32, action_space_length: usize) -> Self {
+        let bs = 16;
+        let discount_factor = 0.95;
+        Qle
