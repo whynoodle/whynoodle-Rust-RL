@@ -33,4 +33,14 @@ impl Qlearning {
             last_action: 42usize,
             last_state: "".to_string(),
             replay_buffer: ReplayBuffer::new(bs, 1000),
-  
+            scores: HashMap::new(),
+            rng: rand::thread_rng(),
+            action_space_length,
+        }
+    }
+
+    pub fn get_learning_rate(&self) -> f32 {
+        self.learning_rate
+    }
+
+    pub fn set
