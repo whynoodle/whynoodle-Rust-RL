@@ -43,4 +43,8 @@ impl Qlearning {
         self.learning_rate
     }
 
-    pub fn set
+    pub fn set_learning_rate(&mut self, lr: f32) -> Result<(), String> {
+        if !(0.0..=1.).contains(&lr) {
+            return Err("learning rate must be in [0,1]!".to_string());
+        }
+        self.learning_rat
