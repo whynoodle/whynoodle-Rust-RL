@@ -63,4 +63,9 @@ impl Qlearning {
     }
 }
 
-impl Qlearning
+impl Qlearning {
+    // update "table" based on last action and their result
+    pub fn finish_round(&mut self, mut reward: f32, s1: Array2<f32>) {
+        if (reward).abs() < EPSILON {
+            reward = 0.5;
+   
