@@ -68,4 +68,8 @@ impl Qlearning {
     pub fn finish_round(&mut self, mut reward: f32, s1: Array2<f32>) {
         if (reward).abs() < EPSILON {
             reward = 0.5;
-   
+        }
+        let s1 = s1.fold("".to_string(), |acc, x| acc + &x.to_string());
+        self.replay_buffer.add_memory(Observation::new(
+            self.last_state.clone(),
+            self.la
