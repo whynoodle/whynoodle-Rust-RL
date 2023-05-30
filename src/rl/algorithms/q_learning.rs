@@ -82,4 +82,9 @@ impl Qlearning {
 
     fn max_future_q(&self, s: String) -> f32 {
         let mut max_val = f32::MIN;
- 
+        for a in 0..self.action_space_length {
+            let key = (s.clone(), a);
+            let new_val = if !self.scores.contains_key(&key) {
+                0.
+            }
+           
