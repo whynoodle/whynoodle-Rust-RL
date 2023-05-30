@@ -72,4 +72,14 @@ impl Qlearning {
         let s1 = s1.fold("".to_string(), |acc, x| acc + &x.to_string());
         self.replay_buffer.add_memory(Observation::new(
             self.last_state.clone(),
-            self.la
+            self.last_action,
+            s1,
+            reward,
+            true,
+        ));
+        self.learn();
+    }
+
+    fn max_future_q(&self, s: String) -> f32 {
+        let mut max_val = f32::MIN;
+ 
