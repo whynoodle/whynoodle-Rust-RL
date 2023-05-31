@@ -87,4 +87,8 @@ impl Qlearning {
             let new_val = if !self.scores.contains_key(&key) {
                 0.
             }
-           
+            // equals zero-init with RIC (see learn() regarding RIC).
+            else {
+                *self.scores.get(&key).expect("can't fail")
+            };
+            if new_
