@@ -91,4 +91,15 @@ impl Qlearning {
             else {
                 *self.scores.get(&key).expect("can't fail")
             };
-            if new_
+            if new_val > max_val {
+                max_val = new_val;
+            }
+        }
+        max_val
+    }
+
+    fn learn(&mut self) {
+        if !self.replay_buffer.is_full() {
+            return;
+        }
+ 
