@@ -102,4 +102,7 @@ impl Qlearning {
         if !self.replay_buffer.is_full() {
             return;
         }
- 
+        let mut updates: Vec<((String, usize), f32)> = Default::default();
+        let memories = self.replay_buffer.get_memories();
+        for observation in memories {
+            let Observation { s0, a, s1
