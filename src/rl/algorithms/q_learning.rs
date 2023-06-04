@@ -109,4 +109,6 @@ impl Qlearning {
             let key = (s0, a);
             let new_val = if self.scores.contains_key(&key) {
                 let val = self.scores.get(&key).expect("can't fail");
-        
+                val + self.learning_rate * (r + self.discount_factor * self.max_future_q(s1) - val)
+            } else {
+                r // use RIC: https://en.wikipedia.org/wiki/Q-learning#Initial_con
