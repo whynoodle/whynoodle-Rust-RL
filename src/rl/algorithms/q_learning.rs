@@ -105,4 +105,8 @@ impl Qlearning {
         let mut updates: Vec<((String, usize), f32)> = Default::default();
         let memories = self.replay_buffer.get_memories();
         for observation in memories {
-            let Observation { s0, a, s1
+            let Observation { s0, a, s1, r, .. } = *observation;
+            let key = (s0, a);
+            let new_val = if self.scores.contains_key(&key) {
+                let val = self.scores.get(&key).expect("can't fail");
+        
