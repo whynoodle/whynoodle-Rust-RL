@@ -111,4 +111,14 @@ impl Qlearning {
                 let val = self.scores.get(&key).expect("can't fail");
                 val + self.learning_rate * (r + self.discount_factor * self.max_future_q(s1) - val)
             } else {
-                r // use RIC: https://en.wikipedia.org/wiki/Q-learning#Initial_con
+                r // use RIC: https://en.wikipedia.org/wiki/Q-learning#Initial_conditions_(Q0)
+            };
+            updates.push((key, new_val));
+        }
+        for (key, new_val) in updates {
+            self.scores.insert(key, new_val);
+        }
+    }
+
+    pub fn get_move(
+    
