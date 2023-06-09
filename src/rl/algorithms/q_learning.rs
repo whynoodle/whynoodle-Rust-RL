@@ -121,4 +121,9 @@ impl Qlearning {
     }
 
     pub fn get_move(
-    
+        &mut self,
+        board_arr: Array2<f32>,   // TODO work on T
+        action_arr: Array1<bool>, // TODO work on V
+        reward: f32,
+    ) -> usize {
+        let board_as_string = board_arr.fold("".to_string(), 
