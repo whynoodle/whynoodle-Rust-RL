@@ -126,4 +126,7 @@ impl Qlearning {
         action_arr: Array1<bool>, // TODO work on V
         reward: f32,
     ) -> usize {
-        let board_as_string = board_arr.fold("".to_string(), 
+        let board_as_string = board_arr.fold("".to_string(), |acc, x| acc + &x.to_string());
+        if f32::abs(reward) > EPSILON || self.rng.gen::<f32>() < 0.2 {
+            self.replay_buffer.add_memory(Observation::new(
+                self.l
