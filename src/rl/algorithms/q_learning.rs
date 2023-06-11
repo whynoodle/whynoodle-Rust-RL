@@ -129,4 +129,10 @@ impl Qlearning {
         let board_as_string = board_arr.fold("".to_string(), |acc, x| acc + &x.to_string());
         if f32::abs(reward) > EPSILON || self.rng.gen::<f32>() < 0.2 {
             self.replay_buffer.add_memory(Observation::new(
-                self.l
+                self.last_state.clone(),
+                self.last_action,
+                board_as_string.clone(),
+                reward,
+                false, // aparently we are not done yet.
+            ));
+     
