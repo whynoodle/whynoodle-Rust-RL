@@ -135,4 +135,11 @@ impl Qlearning {
                 reward,
                 false, // aparently we are not done yet.
             ));
-     
+        }
+        self.learn();
+
+        self.last_state = board_as_string;
+
+        if self.exploration > rand::thread_rng().gen() {
+            self.last_action = utils::get_random_true_entry(action_arr);
+   
