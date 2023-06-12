@@ -142,4 +142,7 @@ impl Qlearning {
 
         if self.exploration > rand::thread_rng().gen() {
             self.last_action = utils::get_random_true_entry(action_arr);
-   
+        } else {
+            self.last_action = match self.get_best_move(action_arr.clone()) {
+                Some(action) => action,
+                None => utils::get_random_true_entry(a
