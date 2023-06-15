@@ -154,4 +154,8 @@ impl Qlearning {
 
     fn get_best_move(&mut self, actions: Array1<bool>) -> Option<usize> {
         // get all legal actions
-        let mut e
+        let mut existing_entries: Vec<(usize, f32)> = Vec::new(); // Vec<(action, val)>
+        for move_candidate in 0..actions.len() {
+            if !actions[move_candidate] {
+                continue;
+      
