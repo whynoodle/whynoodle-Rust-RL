@@ -145,4 +145,13 @@ impl Qlearning {
         } else {
             self.last_action = match self.get_best_move(action_arr.clone()) {
                 Some(action) => action,
-                None => utils::get_random_true_entry(a
+                None => utils::get_random_true_entry(action_arr),
+            }
+        }
+
+        self.last_action
+    }
+
+    fn get_best_move(&mut self, actions: Array1<bool>) -> Option<usize> {
+        // get all legal actions
+        let mut e
