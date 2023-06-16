@@ -163,3 +163,12 @@ impl Qlearning {
             let score = self.scores.get(&(self.last_state.clone(), move_candidate));
             if let Some(&val) = score {
                 existing_entries.push((move_candidate, val))
+            }
+        }
+
+        // all state,action pairs are unknown, return any
+        if existing_entries.is_empty() {
+            return None;
+        }
+
+        let (mut pos, mut max_val): (usize
