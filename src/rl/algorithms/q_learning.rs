@@ -158,4 +158,8 @@ impl Qlearning {
         for move_candidate in 0..actions.len() {
             if !actions[move_candidate] {
                 continue;
-      
+            }
+
+            let score = self.scores.get(&(self.last_state.clone(), move_candidate));
+            if let Some(&val) = score {
+                existing_entries.push((move_candidate, val))
