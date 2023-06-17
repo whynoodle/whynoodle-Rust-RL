@@ -171,4 +171,9 @@ impl Qlearning {
             return None;
         }
 
-        let (mut pos, mut max_val): (usize
+        let (mut pos, mut max_val): (usize, f32) = (0, f32::MIN);
+        for (i, (_action, new_val)) in existing_entries.iter().enumerate() {
+            if *new_val > max_val {
+                pos = i;
+                max_val = *new_val;
+    
