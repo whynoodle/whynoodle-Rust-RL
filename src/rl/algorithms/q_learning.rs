@@ -176,4 +176,9 @@ impl Qlearning {
             if *new_val > max_val {
                 pos = i;
                 max_val = *new_val;
-    
+            }
+        }
+
+        Some(existing_entries[pos].0)
+    }
+}
