@@ -15,4 +15,8 @@ pub fn get_random_true_entry(actions: Array1<bool>) -> usize {
     }
     assert!(
         actions[position],
-        "randomly picked illegal move! {:} {} 
+        "randomly picked illegal move! {:} {} {}",
+        actions, position, b
+    );
+    position
+}
