@@ -8,4 +8,7 @@ pub trait Environment {
     /// The array1 encodes actions as true (allowed) or false (illegal).
     /// The third value returns a reward for the last action of the agent. 0 before the first action of the agent.
     /// The final bool value (done) indicates, wether it is time to reset the environment.
-    fn s
+    fn step(&self) -> (Array2<f32>, Array1<bool>, f32, bool);
+    /// Update the environment based on the action given.
+    ///
+    /// If the action is allowed for the currently active agent then update the environm
