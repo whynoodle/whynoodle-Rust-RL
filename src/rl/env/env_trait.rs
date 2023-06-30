@@ -14,4 +14,8 @@ pub trait Environment {
     /// If the action is allowed for the currently active agent then update the environment and return true.
     /// Otherwise do nothing and return false. The same agent can then try a new move.
     fn take_action(&mut self, action: usize) -> bool;
-    /// Shows the current envrionmen
+    /// Shows the current envrionment state in a graphical way.
+    ///
+    /// The representation is environment specific and might be either by terminal, or in an extra window.
+    fn render(&self);
+    /// Resets the environment to th
