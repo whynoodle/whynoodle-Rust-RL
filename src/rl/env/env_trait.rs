@@ -11,4 +11,7 @@ pub trait Environment {
     fn step(&self) -> (Array2<f32>, Array1<bool>, f32, bool);
     /// Update the environment based on the action given.
     ///
-    /// If the action is allowed for the currently active agent then update the environm
+    /// If the action is allowed for the currently active agent then update the environment and return true.
+    /// Otherwise do nothing and return false. The same agent can then try a new move.
+    fn take_action(&mut self, action: usize) -> bool;
+    /// Shows the current envrionmen
