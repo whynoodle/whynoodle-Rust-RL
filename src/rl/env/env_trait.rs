@@ -18,4 +18,8 @@ pub trait Environment {
     ///
     /// The representation is environment specific and might be either by terminal, or in an extra window.
     fn render(&self);
-    /// Resets the environment to th
+    /// Resets the environment to the initial state.
+    fn reset(&mut self);
+    /// A vector with one entry for each agent, either 1 (agent won), 0 (draw), or -1 (agent lost).
+    fn eval(&mut self) -> Vec<i8>;
+}
