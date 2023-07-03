@@ -213,3 +213,14 @@ fn get_reward(_first_player_turn: bool, _field: [i8; 36], _flags: [i8; 36]) -> f
 fn controlled_fields(field: [i8; 36], flags: [i8; 36]) -> (u8, u8) {
     let mut fields_one = 0;
     let mut fields_two = 0;
+    for (&building_lv, &flags) in field.iter().zip(flags.iter()) {
+        if building_lv > 0 || (building_lv == 0 && flags > 0) {
+            fields_one += 1;
+        } else if building_lv == 0 && flags == 0 {
+            continue;
+        } else {
+            fields_two += 1;
+        }
+    }
+    (fields_one, fields_two)
+}
