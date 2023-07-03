@@ -187,3 +187,41 @@ fn test_bitmask() {
     assert_eq!(p1, check_result(true, tlbr, 0u16, 8));
     assert_eq!(r, check_result(true, tlbr, 0u16, 1));
     assert_eq!(p2, check_result(false, 0u16, trbl, 2));
+    assert_eq!(p2, check_result(false, 0u16, trbl, 4));
+    assert_eq!(p2, check_result(false, 0u16, trbl, 6));
+    assert_eq!(r, check_result(false, 0u16, trbl, 0));
+}
+
+fn check_result(first_player_turn: bool, player1: u16, player2: u16, pos: usize) -> GameState {
+    let board = if first_player_turn { player1 } else { player2 };
+
+    for &bm in BITMASKS[pos] {
+        assert!(bm < 512);
+        if (board & bm) == bm {
+            if first_player_turn {
+                return GameState::Player1won;
+            } else {
+                return GameState::Player2won;
+            };
+        }
+    }
+
+    if (player1 | player2) == 511 {
+        return GameState::Draw;
+    }
+    GameState::Running
+}
+
+// For a higher complexity we give rewards only when finishing games
+fn get_reward(_state: &GameState, _agent_num: usize) -> f32 {
+    0.
+    /*
+    let x = if agent_num == 0 { 1. } else { -1. };
+    match state {
+        GameState::Draw => 0.4,
+        GameState::Player1won => 1. * x,
+        GameState::Player2won => -1. * x,
+        GameState::Running => 0.,
+    }
+    */
+}
