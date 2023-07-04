@@ -3,4 +3,9 @@ pub mod agent;
 
 mod algorithms;
 
-/// A submodule containing the E
+/// A submodule containing the Environment trait which all environments should implement.
+///
+/// An example implementation is given for the game "Fortress".
+pub mod env;
+
+/// This submodule offers some convenience functionality to simplify trai
