@@ -8,4 +8,5 @@ mod algorithms;
 /// An example implementation is given for the game "Fortress".
 pub mod env;
 
-/// This submodule offers some convenience functionality to simplify trai
+/// This submodule offers some convenience functionality to simplify training agents.
+pub mod training;
