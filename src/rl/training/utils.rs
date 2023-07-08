@@ -13,3 +13,10 @@ pub fn read_agents(n: usize) -> Vec<usize> {
     loop {
         let mut buffer = String::new();
         stdin.read_line(&mut buffer).unwrap();
+        let nums: Vec<&str> = buffer.split(' ').collect();
+        if nums.len() != n {
+            println!("Please enter exactly {} values", n);
+            continue;
+        }
+        for agent_num in nums
+     
