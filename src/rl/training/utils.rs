@@ -19,4 +19,14 @@ pub fn read_agents(n: usize) -> Vec<usize> {
             continue;
         }
         for agent_num in nums
-     
+            .iter()
+            .map(|num| usize::from_str_radix(num.trim(), 10).unwrap())
+        {
+            agents.push(agent_num);
+        }
+        break;
+    }
+    agents
+}
+
+/// Reads the amount of training
