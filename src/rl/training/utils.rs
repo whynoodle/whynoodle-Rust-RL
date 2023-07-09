@@ -29,4 +29,7 @@ pub fn read_agents(n: usize) -> Vec<usize> {
     agents
 }
 
-/// Reads the amount of training
+/// Reads the amount of training- and test-games from terminal.
+pub fn read_game_numbers() -> (u64, u64, u64) {
+    loop {
+        println!("\nPlease enter #training_games #test_games #iterations, seperated by whi
