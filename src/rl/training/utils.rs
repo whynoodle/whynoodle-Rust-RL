@@ -32,4 +32,8 @@ pub fn read_agents(n: usize) -> Vec<usize> {
 /// Reads the amount of training- and test-games from terminal.
 pub fn read_game_numbers() -> (u64, u64, u64) {
     loop {
-        println!("\nPlease enter #training_games #test_games #iterations, seperated by whi
+        println!("\nPlease enter #training_games #test_games #iterations, seperated by whitespace");
+        let stdin = io::stdin();
+        let mut buffer = String::new();
+        stdin.read_line(&mut buffer).unwrap();
+        let nums: Vec<&str> = buffer.s
