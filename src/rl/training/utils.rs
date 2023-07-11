@@ -42,3 +42,11 @@ pub fn read_game_numbers() -> (u64, u64, u64) {
             continue;
         }
         let nums: Vec<u64> = nums
+            .iter()
+            .map(|num| u64::from_str_radix(num.trim(), 10).unwrap())
+            .collect();
+        return (nums[0], nums[1], nums[2]);
+    }
+}
+
+/// For round based games, reads an usize valu
