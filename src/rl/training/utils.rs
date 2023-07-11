@@ -36,4 +36,9 @@ pub fn read_game_numbers() -> (u64, u64, u64) {
         let stdin = io::stdin();
         let mut buffer = String::new();
         stdin.read_line(&mut buffer).unwrap();
-        let nums: Vec<&str> = buffer.s
+        let nums: Vec<&str> = buffer.split(' ').collect();
+        if nums.len() != 3 {
+            println!("Please enter exactly three values");
+            continue;
+        }
+        let nums: Vec<u64> = nums
