@@ -54,4 +54,10 @@ pub fn read_rounds_per_game() -> usize {
     //set number of rounds to play per game
     let mut rounds = String::new();
     println!("please insert the number of rounds per game.");
-   
+    io::stdin()
+        .read_line(&mut rounds)
+        .expect("Failed to read number of rounds");
+
+    let rounds: usize = rounds.trim().parse().expect("please type a number");
+    rounds
+}
