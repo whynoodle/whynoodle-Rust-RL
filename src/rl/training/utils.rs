@@ -49,4 +49,9 @@ pub fn read_game_numbers() -> (u64, u64, u64) {
     }
 }
 
-/// For round based games, reads an usize valu
+/// For round based games, reads an usize value from terminal.
+pub fn read_rounds_per_game() -> usize {
+    //set number of rounds to play per game
+    let mut rounds = String::new();
+    println!("please insert the number of rounds per game.");
+   
